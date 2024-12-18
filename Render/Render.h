@@ -6,13 +6,12 @@
 // ≥ÈœÛ‰÷»æ¿‡
 class Render {
 public:
-	Render();
-
-	virtual ~Render();
-
+	Render() = default;
+	virtual ~Render() = default;
 	virtual bool BuildRender(HWND hwnd, int width, int height) = 0;
-	
-
+	virtual void Release() = 0;
+	virtual void BeginPlay() = 0;
+	virtual void EndPlay() = 0;
 };
 
 #endif // !_Render_h_

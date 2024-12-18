@@ -26,6 +26,8 @@ Render_Direct2d::Render_Direct2d() {
 	this->render_target = nullptr;		// 渲染画刷
 	this->textfactory = nullptr;		// 文字工厂
 
+	// 属性
+	background_color = D2D1::ColorF(0, 0, 0);
 }
 
 // 析构
@@ -74,6 +76,22 @@ bool Render_Direct2d::BuildRender(HWND hWnd, int width, int height) {
 // 释放
 void Render_Direct2d::Release() {
 
+}
+
+// 开始渲染
+void Render_Direct2d::BeginPlay() {
+	if (render_target) {
+		render_target->BeginDraw();
+		render_target->Clear(background_color);
+
+	}
+}
+
+// 结束渲染
+void Render_Direct2d::EndPlay() {
+	if (render_target) {
+		render_target->EndDraw();
+	}
 }
 
 // 创建图像

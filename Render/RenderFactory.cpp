@@ -65,7 +65,7 @@ void RenderFactory::InitRender(int renderType, ...) {
 
 // 获取渲染器工厂
 RenderFactory* RenderFactory::GetInstance() {
-	if (g_renderFactory) {
+	if (!g_renderFactory) {
 		g_renderFactory = new RenderFactory();
 	}
 	return g_renderFactory;

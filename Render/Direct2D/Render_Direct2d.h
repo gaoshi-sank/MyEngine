@@ -26,6 +26,10 @@ private:
 	ID2D1HwndRenderTarget* render_target;			// 渲染画刷
 	IDWriteFactory* textfactory;					// 文字工厂
 
+	// 属性
+	D2D1_COLOR_F background_color;	// 背景颜色
+
+
 public:
 	// 构造
 	Render_Direct2d();
@@ -38,6 +42,12 @@ public:
 
 	// 释放 渲染器
 	virtual void Release();
+
+	// 开始渲染
+	virtual void BeginPlay();
+
+	// 结束渲染
+	virtual void EndPlay();
 
 	// 创建图像
 	virtual ID2D1Bitmap* CreateImage(const char* filename);
