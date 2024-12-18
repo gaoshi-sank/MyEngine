@@ -21,14 +21,30 @@
 // Direct2D API
 class Render_Direct2d : public Render {
 private:
-	// 工具 
+	IWICImagingFactory* WicFactory = nullptr;		// WIC工厂
 	ID2D1Factory* factory;							// 渲染工厂
 	ID2D1HwndRenderTarget* render_target;			// 渲染画刷
-	IWICImagingFactory* WicFactory = nullptr;		// WIC工厂
 	IDWriteFactory* textfactory;					// 文字工厂
 
 public:
+	// 构造
+	Render_Direct2d();
 
+	// 析构
+	virtual ~Render_Direct2d();
+
+	// 创建渲染器
+	virtual bool BuildRender(HWND hwnd, int width, int height);
+
+	// 释放 渲染器
+	virtual void Release();
+
+	// 创建图像
+	virtual ID2D1Bitmap* CreateImage(const char* filename);
+
+private:
+	// 获取图像格式解析对象
+	HRESULT GetFormatConvert(IWICFormatConverter*& pConverter, LPCWSTR filename);
 
 };
 

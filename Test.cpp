@@ -1,7 +1,8 @@
 #include <Windows.h>
-#include "Win32/WindowFactory.h"
 #include <iostream>
 #include <memory>
+#include "Win32/WindowFactory.h"
+#include "Render/RenderFactory.h"
 
 using namespace std;
 
@@ -16,6 +17,9 @@ int APIENTRY wWinMain(
     WindowFactory::SethInstance(hInstance);
     auto mainWindow = WindowFactory::Build(250, 80, 640, 480);
     if (mainWindow) {
+        RenderFactory::InitRender(RenderFactory::RenderType_Direct2D);
+        auto render = RenderFactory::GetInstance();
+
         mainWindow->Process();
     }
 
