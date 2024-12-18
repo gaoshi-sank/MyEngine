@@ -36,6 +36,9 @@ public:
 	// 消息控制
 	virtual void Process();
 
+	// 获取句柄
+	virtual HWND GetHandle();
+
 private:
 	// 创建
 	void Create();
@@ -58,6 +61,7 @@ private:
 	static HINSTANCE hinstance;
 
 public:
+	// 删除 复制构造函数 和 赋值重载函数
 	WindowFactory(const WindowFactory&) = delete;
 	WindowFactory& operator=(const WindowFactory&) = delete;
 

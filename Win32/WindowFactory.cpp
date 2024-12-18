@@ -1,4 +1,5 @@
 #include "WindowFactory.h"
+#include "../Render/RenderFactory.h"
 
 // 构造
 Window::Window() {
@@ -65,8 +66,13 @@ void Window::Process() {
     ShowWindow(m_hWnd, isfull ? SW_MAXIMIZE : SW_SHOW);
     UpdateWindow(m_hWnd);
 
+    // 处理渲染器
+    RenderFactory::InitRender(RenderFactory::RenderType_Direct2D, m_hWnd, 640, 480);
+
+    // 循环消息
     MSG msg = { 0 };
     while (1) {
+        // 处理所有win32消息
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -75,8 +81,25 @@ void Window::Process() {
                 break;
             }
         }
+        // 空闲时间
+        else {
+            auto renderFactory = RenderFactory::GetInstance();
+            if (renderFactory) {
+                auto render = renderFactory->GetRender();
+                if (render) {
+                    render->BeginPlay();
+
+                    render->EndPlay();
+                }
+            }
+        }
     }
 
+}
+
+// 获取句柄
+HWND Window::GetHandle() {
+    return this->m_hWnd;
 }
 
 // 窗口回调函数
