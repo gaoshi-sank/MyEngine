@@ -4,7 +4,7 @@
 #include <thread>
 #include "Win32/WindowFactory.h"
 #include "Render/RenderFactory.h"
-#include "Render/Sprite/Sprite.h"
+#include "Render/Sprite/SSprite.h"
 
 using namespace std;
 int status = 1;
@@ -40,10 +40,11 @@ int APIENTRY wWinMain(
 
 void subthread() {
 
-    Sprite* _test = new Sprite();
-    if (_test) {
-        _test->SetImage("C:\\Users\\asus\\Pictures\\39\\Title\\1-1.bmp");
-    }
+    SImage* _test = new SImage("C:\\Users\\asus\\Pictures\\39\\Title\\1-1.bmp");
+    SText* _test2 = new SText("ÊÀ½ç£¬ÄãºÃ£¡");
+    _test2->SetLocaiton(100, 50);
+    _test2->SetSize(100, 50);
+    _test2->ReSetColor(255, 255, 255);
 
     while (status) {
         auto renderFactory = RenderFactory::GetInstance();
@@ -53,7 +54,11 @@ void subthread() {
                 render->BeginPlay();
 
                 if (_test) {
-                    _test->Draw();
+                //    _test->Draw();
+                }
+
+                if (_test2) {
+                    _test2->Draw();
                 }
 
                 render->EndPlay();
