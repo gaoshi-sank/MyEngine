@@ -49,8 +49,17 @@ public:
 	// 结束渲染
 	virtual void EndPlay();
 
+	// 绘制图像
+	virtual void RenderImage(void* image, int dx = 0, int dy = 0, int dw = 0, int dh = 0, int sx = 0, int sy = 0, int sw = 0, int sh = 0, float opacity = 1.0f, float angle = 0.0f);
+
 	// 创建图像
-	virtual ID2D1Bitmap* CreateImage(const char* filename);
+	virtual void* CreateImage(const char* filename);
+
+	// 获取渲染器类型
+	virtual int GetType();
+
+	// 获取图像大小
+	virtual void GetImageSize(void* image, int& width, int& height);
 
 private:
 	// 获取图像格式解析对象

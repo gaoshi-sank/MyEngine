@@ -1,10 +1,11 @@
 #include "Render_Direct2d.h"
+#include "../RenderFactory.h"
 
 static bool isInitCom = false;
 
 // 多字节转为宽字符 
-bool CharToWChar(const char* szStr, WCHAR* wszClassName) {
-	int result = 0;
+static bool CharToWChar(const char* szStr, WCHAR* wszClassName) {
+	bool result = false;
 	if (wszClassName != nullptr) {
 		int wlen = 0, len = (int)strlen(szStr);
 
@@ -15,7 +16,6 @@ bool CharToWChar(const char* szStr, WCHAR* wszClassName) {
 			wszClassName[len] = '\0';
 		}
 	}
-
 	return result;
 }
 
@@ -78,6 +78,7 @@ void Render_Direct2d::Release() {
 
 }
 
+
 // 开始渲染
 void Render_Direct2d::BeginPlay() {
 	if (render_target) {
@@ -94,8 +95,24 @@ void Render_Direct2d::EndPlay() {
 	}
 }
 
+// 绘制图像
+void Render_Direct2d::RenderImage(void* _image, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, float opacity, float angle) {
+	if (this->render_target && _image) {
+		// 转换
+		auto image = reinterpret_cast<ID2D1Bitmap*>(_image);	// 有风险
+		auto rect = D2D1::RectF(dx * 1.0f, dy * 1.0f, dx * 1.0f + dw, dy * 1.0f + dh);
+		auto src_rect = D2D1::RectF(sx * 1.0f, sy * 1.0f, sx * 1.0f + sw, sy * 1.0f + sh);
+
+		// 绘制
+		this->render_target->DrawBitmap(
+			image, rect, opacity,
+			D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+			src_rect);
+	}
+}
+
 // 创建图像
-ID2D1Bitmap* Render_Direct2d::CreateImage(const char* filename) {
+void* Render_Direct2d::CreateImage(const char* filename) {
 	// 变量列表
 	IWICFormatConverter* pConverter = nullptr;
 	ID2D1Bitmap* pBitmap = nullptr;
@@ -126,6 +143,25 @@ ID2D1Bitmap* Render_Direct2d::CreateImage(const char* filename) {
 		return pBitmap;
 	}
 	return nullptr;
+}
+
+// 获取渲染器类型
+int Render_Direct2d::GetType() {
+	return RenderFactory::RenderType_Direct2D;
+}
+
+
+// 获取图像大小
+void Render_Direct2d::GetImageSize(void* _image, int& width, int& height) {
+	if (_image) {
+		// 转换
+		auto image = reinterpret_cast<ID2D1Bitmap*>(_image);	// 有风险
+
+		// 设置属性
+		auto size = image->GetSize();
+		width = static_cast<int>(size.width);
+		height = static_cast<int>(size.height);
+	}
 }
 
 // 获取图像格式解析对象
