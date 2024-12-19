@@ -66,9 +66,6 @@ void Window::Process() {
     ShowWindow(m_hWnd, isfull ? SW_MAXIMIZE : SW_SHOW);
     UpdateWindow(m_hWnd);
 
-    // 处理渲染器
-    RenderFactory::InitRender(RenderFactory::RenderType_Direct2D, m_hWnd, 640, 480);
-
     // 循环消息
     MSG msg = { 0 };
     while (1) {
@@ -83,15 +80,7 @@ void Window::Process() {
         }
         // 空闲时间
         else {
-            auto renderFactory = RenderFactory::GetInstance();
-            if (renderFactory) {
-                auto render = renderFactory->GetRender();
-                if (render) {
-                    render->BeginPlay();
-
-                    render->EndPlay();
-                }
-            }
+            
         }
     }
 
