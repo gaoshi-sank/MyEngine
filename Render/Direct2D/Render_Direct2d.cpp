@@ -97,17 +97,34 @@ void Render_Direct2d::EndPlay() {
 
 // 绘制图像
 void Render_Direct2d::RenderImage(void* _image, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, float opacity, float angle) {
-	if (this->render_target && _image) {
+	if (render_target && _image) {
 		// 转换
-		auto image = reinterpret_cast<ID2D1Bitmap*>(_image);	// 有风险
+		auto image = reinterpret_cast<ID2D1Bitmap*>(_image);
 		auto rect = D2D1::RectF(dx * 1.0f, dy * 1.0f, dx * 1.0f + dw, dy * 1.0f + dh);
 		auto src_rect = D2D1::RectF(sx * 1.0f, sy * 1.0f, sx * 1.0f + sw, sy * 1.0f + sh);
 
 		// 绘制
-		this->render_target->DrawBitmap(
+		render_target->DrawBitmap(
 			image, rect, opacity,
 			D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 			src_rect);
+	}
+}
+
+// 绘制文本
+void Render_Direct2d::RenderText(wchar_t* render_text, int dx, int dy, int dw, int dh, void* layout, void* brash) {
+	if (render_target && render_text && layout && brash) {
+		// 转换
+		auto text_rect = D2D1::RectF(dx * 1.0f, dy * 1.0f, dx * 1.0f + dw, dy * 1.0f + dh);
+		auto text_layout = reinterpret_cast<IDWriteTextLayout*>(layout);
+		auto text_brash = reinterpret_cast<ID2D1SolidColorBrush*>(brash);
+
+		// 绘制
+		render_target->DrawText(
+			render_text, UINT32(wcslen(render_text)),
+			text_layout,
+			text_rect, text_brash,
+			D2D1_DRAW_TEXT_OPTIONS_CLIP);
 	}
 }
 
@@ -145,6 +162,133 @@ void* Render_Direct2d::CreateImage(const char* filename) {
 	return nullptr;
 }
 
+// 创建文本布局
+void* Render_Direct2d::CreateTextLayout(wchar_t* render_text, void* _text_format) {
+	IDWriteTextLayout* text_layout = nullptr;
+	if (textfactory) {
+		auto text_format = reinterpret_cast<IDWriteTextFormat*>(_text_format);
+		textfactory->CreateTextLayout(render_text,
+			UINT32(wcslen(render_text)),
+			text_format,
+			0, 0,
+			&text_layout);
+	}
+	return text_layout;
+}
+
+// 创建文本格式
+void* Render_Direct2d::CreateTextFormat(float font_size) {
+	IDWriteTextFormat* textformat = nullptr;
+	if (textfactory) {
+		textfactory->CreateTextFormat(
+			L"宋体", 
+			nullptr,
+			DWRITE_FONT_WEIGHT_NORMAL,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			font_size,
+			L"",
+			&textformat);
+	}
+	return textformat;
+}
+
+// 创建画刷
+void* Render_Direct2d::CreateBrush(int red, int green, int blue, int alpha) {
+	ID2D1SolidColorBrush* color_brush = nullptr;
+	if (render_target) {
+		auto color = D2D1::ColorF(red * 1.0f, green * 1.0f, blue * 1.0f, alpha * 1.0f / 255);
+		render_target->CreateSolidColorBrush(color, &color_brush);
+	}
+	return color_brush;
+}
+
+// 设置文本风格
+void Render_Direct2d::SetTextStyle(void* _layout, int horizontal, int vertical, int swrapping) {
+	if (_layout) {
+		auto text_layout = reinterpret_cast<IDWriteTextLayout*>(_layout);
+		
+		// 水平
+		switch (horizontal) {
+		case 1: 
+		{
+			// 水平居中 - 默认
+			text_layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+			break;
+		}
+		case 2:
+		{
+			// 字体铺满区域 - 可能存在拉伸
+			text_layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_JUSTIFIED);
+			break;
+		}
+		case 3:	
+		{
+			// 水平居右
+			text_layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+			break;
+		}	
+		default:
+		{
+			// 水平居左
+			text_layout->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+			break;
+		}
+		}
+
+		// 垂直
+		switch (vertical) {
+		case 1: 
+		{
+			// 下边
+			text_layout->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);	
+			break;
+		}
+		case 2: 
+		{
+			// 上边
+			text_layout->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+			break;
+		}
+		default: {
+			// 垂直居中 - 默认
+			text_layout->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);	
+			break;
+		}
+		}
+
+		// 换行
+		switch (vertical) {
+		case 1: 
+		{
+			// 保持在同一行
+			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);				
+			break;
+		}
+		case 2: 
+		{
+			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_EMERGENCY_BREAK); 
+			break;
+		}
+		case 3:
+		{
+			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_WHOLE_WORD);
+			break;
+		}
+		case 4:
+		{
+			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_CHARACTER);
+			break;
+		}
+		default: {
+			// 文字跨行打断，以避免文字溢出布局框
+			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);				
+			break;
+		}
+		}
+	}
+}
+
 // 获取渲染器类型
 int Render_Direct2d::GetType() {
 	return RenderFactory::RenderType_Direct2D;
@@ -161,6 +305,15 @@ void Render_Direct2d::GetImageSize(void* _image, int& width, int& height) {
 		auto size = image->GetSize();
 		width = static_cast<int>(size.width);
 		height = static_cast<int>(size.height);
+	}
+}
+
+// 释放对象
+// 用作部分不能delete的实例
+void Render_Direct2d::ReleaseObject(void* _obejct) {
+	if (_obejct) {
+		auto obejct = reinterpret_cast<IUnknown*>(_obejct);
+		obejct->Release();
 	}
 }
 
