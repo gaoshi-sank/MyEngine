@@ -9,9 +9,10 @@
 using namespace std;
 int status = 1;
 
+// 函数声明
 void subthread();
 
-
+// 主函数
 int APIENTRY wWinMain(
     _In_        HINSTANCE hInstance,
     _In_opt_    HINSTANCE hPrevInstance,
@@ -25,6 +26,7 @@ int APIENTRY wWinMain(
         RenderFactory::InitRender(RenderFactory::RenderType_Direct2D, mainWindow->GetHandle(), 640, 480);
         auto sub = new thread(subthread);
         sub->detach();
+
 
         // Win32消息循环
         mainWindow->Process();
