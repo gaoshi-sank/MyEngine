@@ -65,3 +65,8 @@ void SImage::SetSize(int w, int h) {
 	this->draw_width = w;
 	this->draw_height = h;
 }
+
+// ÉèÖÃÐý×ª
+void SImage::SetRotate(float _angle) {
+	this->angle = _angle;
+}

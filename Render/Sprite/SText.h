@@ -42,6 +42,10 @@ public:
 	// 设置绘制大小
 	virtual void SetSize(int w, int h);
 
+	// 设置旋转 
+	// 暂未实装
+	virtual void SetRotate(float angle);
+
 	// 重设布局 
 	// 水平格式，垂直格式，自动换行 
 	void ReSetLayout(int level_Style = 1, int vertical_Style = 1, int swrapping = 0);
@@ -51,6 +55,7 @@ public:
 
 	// 重设颜色 
 	void ReSetColor(int red, int green, int blue);
+
 };
 
 

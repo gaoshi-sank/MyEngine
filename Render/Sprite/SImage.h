@@ -34,6 +34,9 @@ public:
 
 	// 设置绘制大小
 	virtual void SetSize(int w, int h);
+
+	// 设置旋转 
+	virtual void SetRotate(float angle);
 };
 
 #endif // !_SImage_h_

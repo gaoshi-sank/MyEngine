@@ -74,6 +74,13 @@ void SText::SetSize(int w, int h) {
 	this->draw_width = w;
 	this->draw_height = h;
 }
+
+// 设置旋转 
+// 暂未实装
+void SText::SetRotate(float angle) {
+
+}
+
 // 重设布局 
 void SText::ReSetLayout(int horizontal_Style, int vertical_Style, int swrapping) {
 	auto render = RenderFactory::GetInstance()->GetRender();
