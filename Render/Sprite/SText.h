@@ -4,7 +4,7 @@
 #include "BaseSprite.h"
 
 
-class SText : private Sprite {
+class SText : public Sprite {
 private:
 	// нд╠╬
 	std::string text;			// ндвж

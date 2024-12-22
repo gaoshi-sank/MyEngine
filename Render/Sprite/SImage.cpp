@@ -70,3 +70,21 @@ void SImage::SetSize(int w, int h) {
 void SImage::SetRotate(float _angle) {
 	this->angle = _angle;
 }
+
+// 设置裁剪
+void SImage::SetCrop(int x, int y, int width, int height) {
+	this->src_x = x;
+	this->src_y = y;
+	this->src_width = width;
+	this->src_height = height;
+}
+
+// 获取图像大小
+bool SImage::GetImageSize(int& width, int& height) {
+	auto render = RenderFactory::GetInstance()->GetRender();
+	if (render && _image) {
+		render->GetImageSize(_image, width, height);
+		return true;
+	}
+	return false;
+}

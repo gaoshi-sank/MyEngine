@@ -4,7 +4,7 @@
 #include "BaseSprite.h"
 
 
-class SImage : private Sprite {
+class SImage : public Sprite {
 private:
 	// 图像
 	void* _image;				// 图像对象
@@ -37,6 +37,12 @@ public:
 
 	// 设置旋转 
 	virtual void SetRotate(float angle);
+
+	// 设置裁剪
+	virtual void SetCrop(int x, int y, int width, int height);
+
+	// 获取图像大小
+	virtual bool GetImageSize(int& width, int& height);
 };
 
 #endif // !_SImage_h_
