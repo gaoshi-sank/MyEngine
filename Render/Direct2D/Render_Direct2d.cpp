@@ -261,8 +261,8 @@ void Render_Direct2d::SetTextStyle(void* _layout, int horizontal, int vertical, 
 		switch (vertical) {
 		case 1: 
 		{
-			// 保持在同一行
-			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);				
+			// 文字跨行打断，以避免文字溢出布局框
+			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);
 			break;
 		}
 		case 2: 
@@ -281,8 +281,8 @@ void Render_Direct2d::SetTextStyle(void* _layout, int horizontal, int vertical, 
 			break;
 		}
 		default: {
-			// 文字跨行打断，以避免文字溢出布局框
-			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_WRAP);				
+			// 保持在同一行
+			text_layout->SetWordWrapping(DWRITE_WORD_WRAPPING_NO_WRAP);
 			break;
 		}
 		}

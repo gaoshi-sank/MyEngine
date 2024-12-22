@@ -2,6 +2,7 @@
 #define _Render_h_
 
 #include <Windows.h>
+#include <windowsx.h>
 
 // ³éÏóäÖÈ¾Àà
 class Render {
