@@ -16,9 +16,13 @@ public:
 	bool window_mouse;			// 可触发鼠标事件
 	int window_renderlevel;		// 窗口渲染层
 	int window_x;				// 窗口区域 X
-	int window_y;
-	int window_width;			
+	int window_y;				// 窗口区域 Y
+	int window_width;			// 窗口区域 width
 	int window_height;			// 窗口区域 height
+
+	// 事件属性
+	int mouse_posx;				// 光标X
+	int mouse_posy;				// 光标Y
 
 public:
 	// 构造
@@ -31,7 +35,7 @@ public:
 	virtual void PreRelease() = 0;
 
 	// 事件驱动
-	virtual void CheckEvent(int* param) = 0; 
+	virtual void CheckEvent(unsigned int* param) = 0;
 
 	// 创建
 	virtual bool Create() = 0;

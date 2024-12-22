@@ -29,8 +29,24 @@ void UI_Lable::PreRelease(){
 };
 
 // 更新事件
-void UI_Lable::CheckEvent(int* param) {
+void UI_Lable::CheckEvent(unsigned int* param) {
+	if (window_release || !param) {
+		return;
+	}
 
+	int param_len = param[0];
+	if (param_len > 2) {
+		auto message = param[1];
+
+		// 基础光标位置
+		if (window_mouse && message == WM_MOUSEMOVE) {
+			if (param_len > 3) {
+				LPARAM lParam = (LPARAM)param[2];
+				mouse_posx = GET_X_LPARAM(lParam);
+				mouse_posy = GET_Y_LPARAM(lParam);
+			}
+		}
+	}
 }
 
 
@@ -67,8 +83,17 @@ void UI_Lable::AddStaticText(const std::string& text) {
 		return;
 	}
 
-	if (_text) {
+	if (!_text) {
+		_text = new SText(text.c_str());
+	}
+	else {
 		_text->ReSetText(text.c_str());
+	}
+
+	if (_text) {
+		_text->SetLocaiton(window_x, window_y);
+		_text->SetSize(window_width, window_height);
+		_text->ReSetLayout();
 	}
 }
 

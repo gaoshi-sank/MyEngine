@@ -12,6 +12,9 @@ UI_Base::UI_Base() {
 	this->window_key = false;				// 默认 - 不触发键盘 
 	this->window_mouse = true;				// 默认 - 可触发鼠标 
 	this->window_renderlevel = 0x00;		// 默认 - 渲染层 0
+
+	// 事件属性
+	mouse_posx = mouse_posy = 0;
 	
 	// 窗口属性
 	this->window_x = this->window_y = this->window_width = this->window_height = 0;

@@ -21,7 +21,7 @@ public:
 	virtual void PreRelease();
 
 	// 事件驱动
-	virtual void CheckEvent(int* param);
+	virtual void CheckEvent(unsigned int* param);
 
 	// 创建
 	virtual bool Create();
