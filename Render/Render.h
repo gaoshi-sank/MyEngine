@@ -2,7 +2,11 @@
 #define _Render_h_
 
 #include <Windows.h>
-#include <windowsx.h>
+#include <Windowsx.h>
+#include <iostream>
+#include <vector>
+
+using namespace std;
 
 // ³éÏóäÖÈ¾Àà
 class Render {
