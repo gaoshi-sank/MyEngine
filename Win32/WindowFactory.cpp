@@ -1,5 +1,6 @@
 #include "WindowFactory.h"
 #include "../Render/RenderFactory.h"
+#include "../Umg/UIFactory.h"
 
 // 构造
 Window::Window() {
@@ -93,14 +94,34 @@ HWND Window::GetHandle() {
 
 // 窗口回调函数
 LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
-    
+    auto param = new unsigned int[4];
+    memset(param, 0, sizeof(unsigned int) * 4);
+    param[1] = message;
+
     switch (message) {
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_MOUSEMOVE:
+        param[0] = 3;
+        param[2] = (unsigned int)lParam;
+        UIFactory::CheckEvent(param);
+        break;
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
+    case WM_RBUTTONDOWN:
+    case WM_RBUTTONUP:
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
+        param[0] = 2;
+        UIFactory::CheckEvent(param);
+        break;
     default:
         break;
     }
+
+    delete[] param;
+    param = nullptr;
 
     return DefWindowProc(hwnd, message, wParam, lParam);
 }
