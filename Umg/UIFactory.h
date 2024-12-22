@@ -5,10 +5,11 @@
 #include <mutex>
 #include <vector>
 #include "Control/UI_Lable.h"		// 标签UI
+#include "Control/UI_Button.h"		// 按钮UI
 
 
+// UI工厂
 class UIFactory {
-
 private:
 	// 锁
 	std::mutex lockList;
@@ -39,6 +40,9 @@ public:
 	// 删除控件
 	static void DelWindow(UI_Base* _ui);
 
+	// 事件驱动
+	static void CheckEvent(unsigned int* param);
+
 	// 更新
 	static void Update();
 
@@ -48,6 +52,7 @@ public:
 	// 判断顶层
 	static bool GetLevelTop(int pos_x, int pos_y, UI_Base* other);
 
+private:
 
 };
 

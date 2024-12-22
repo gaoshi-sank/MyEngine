@@ -4,7 +4,7 @@
 #include "../UI_Base.h"
 
 // 标签UI
-class UI_Lable : private UI_Base {
+class UI_Lable : public UI_Base {
 private:
 	SImage* _image;	// 图像
 	SText* _text;	// 文本
@@ -20,9 +20,6 @@ public:
 	// 预释放
 	virtual void PreRelease();
 
-	// 事件驱动
-	virtual void CheckEvent(unsigned int* param);
-
 	// 创建
 	virtual bool Create();
 
@@ -32,6 +29,9 @@ public:
 
 	// 增加静态文本
 	virtual void AddStaticText(const std::string& text);
+
+	// 事件驱动
+	virtual void CheckEvent(unsigned int* param);
 
 	// 更新
 	virtual void Update();

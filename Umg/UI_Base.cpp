@@ -15,6 +15,7 @@ UI_Base::UI_Base() {
 
 	// 事件属性
 	mouse_posx = mouse_posy = 0;
+	window_inrect = false;
 	
 	// 窗口属性
 	this->window_x = this->window_y = this->window_width = this->window_height = 0;

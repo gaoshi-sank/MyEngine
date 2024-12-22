@@ -3,6 +3,7 @@
 
 // 包含文件
 #include "../Render/Sprite/SSprite.h"	// 渲染用精灵
+#include "UIHelper.h"
 
 // 控件
 class UI_Base {
@@ -23,6 +24,7 @@ public:
 	// 事件属性
 	int mouse_posx;				// 光标X
 	int mouse_posy;				// 光标Y
+	bool window_inrect;			// 区域内
 
 public:
 	// 构造
@@ -34,11 +36,11 @@ public:
 	// 预释放
 	virtual void PreRelease() = 0;
 
-	// 事件驱动
-	virtual void CheckEvent(unsigned int* param) = 0;
-
 	// 创建
 	virtual bool Create() = 0;
+
+	// 事件驱动
+	virtual void CheckEvent(unsigned int* param) = 0;
 
 	// 更新
 	virtual void Update() = 0;
