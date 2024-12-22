@@ -47,8 +47,10 @@ public:
 	virtual void SetRotate(float angle);
 
 	// 重设布局 
-	// 水平格式，垂直格式，自动换行 
-	void ReSetLayout(int level_Style = 1, int vertical_Style = 1, int swrapping = 0);
+	// 水平格式: 居中
+	// 垂直格式: 居中
+	// 自动换行: 保持同一行 
+	void ReSetLayout(int level_Style = 1, int vertical_Style = 0, int swrapping = 1);
 
 	// 重设文本
 	void ReSetText(const char* text = nullptr);
