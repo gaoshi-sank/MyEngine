@@ -27,7 +27,6 @@ int APIENTRY wWinMain(
         auto sub = new thread(subthread);
         sub->detach();
 
-
         // Win32消息循环
         mainWindow->Process();
 
@@ -42,8 +41,12 @@ int APIENTRY wWinMain(
 
 void subthread() {
 
-    std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\116-1.png";
-    UI_Lable* _test = new UI_Lable();
+
+    // 初始化UI套件
+    UIFactory::InitUIProvider();
+
+    std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
+    UI_Button* _test = new UI_Button();
     if(_test){
         _test->Create(testpath, 0, 0, 100, 50);
         _test->AddStaticText("Hello World!");
@@ -51,15 +54,18 @@ void subthread() {
 
 
     while (status) {
+        // 更新
+        UIFactory::Update();
+
+        // 渲染
         auto renderFactory = RenderFactory::GetInstance();
         if (renderFactory) {
             auto render = renderFactory->GetRender();
             if (render) {
                 render->BeginPlay();
-
-                if (_test) {
-                    _test->Draw();
-                }
+                
+                // 渲染UI
+                UIFactory::Draw();
 
 
                 render->EndPlay();
