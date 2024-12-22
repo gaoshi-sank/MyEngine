@@ -27,8 +27,14 @@ public:
 	// 析构
 	virtual ~UI_Base();
 
+	// 预释放
+	virtual void PreRelease() = 0;
+
 	// 事件驱动
-	virtual void CheckEvent(int* param) = 0;
+	virtual void CheckEvent(int* param) = 0; 
+
+	// 创建
+	virtual bool Create() = 0;
 
 	// 更新
 	virtual void Update() = 0;
@@ -40,10 +46,10 @@ public:
 	virtual void SetLocation(int x, int y) = 0;
 
 	// 设置大小
-	virtual void SetSize(int x, int y) = 0;
+	virtual void SetSize(int w, int h) = 0;
 
 	// 设置可见性
-	virtual void SetVisiable(bool life) = 0;
+	virtual void SetVisiable(bool visible = false) = 0;
 };
 
 

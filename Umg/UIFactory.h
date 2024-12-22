@@ -49,4 +49,6 @@ public:
 	static bool GetLevelTop(int pos_x, int pos_y, UI_Base* other);
 
 
+};
+
 #endif // !_UIFactory_h_
