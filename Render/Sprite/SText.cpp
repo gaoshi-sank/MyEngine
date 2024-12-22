@@ -26,18 +26,7 @@ SText::SText() {
 // 构造
 SText::SText(const char* _text) : SText() {
 	// 重新设置文本
-	this->text.clear();
-	this->text = _text;
-	if (this->render_text) {
-		delete this->render_text;
-		this->render_text = nullptr;
-	}
-
-	// 字节转换
-	size_t loopnum = text.size() / limit_length;
-	this->render_text = new wchar_t[limit_length * (loopnum + 1)];
-	memset(this->render_text, '\0', sizeof(wchar_t) * (limit_length * (loopnum + 1)));
-	CharToWChar(this->text.c_str(), this->render_text);
+	ReSetText(_text);
 
 	// 重设文本布局
 	ReSetLayout();
@@ -85,9 +74,34 @@ void SText::SetRotate(float angle) {
 void SText::ReSetLayout(int horizontal_Style, int vertical_Style, int swrapping) {
 	auto render = RenderFactory::GetInstance()->GetRender();
 	if (render) {
-		render->ReleaseObject(text_layout);
-		text_layout = render->CreateTextLayout(this->render_text, this->text_format);
+		// 重新创建实例对象
+		if (!text_layout) {
+			text_layout = render->CreateTextLayout(this->render_text, this->text_format);
+		}
+		
+		// 设置文本格式
 		render->SetTextStyle(text_layout, horizontal_Style, vertical_Style, swrapping);
+	}
+}
+
+// 重设文本
+void SText::ReSetText(const char* _text) {
+	if (_text) {
+		// 修改文本
+		this->text.clear();
+		this->text = _text;
+
+		// 字节转换
+		// 重新申请
+		if (this->render_text) {
+			delete[] this->render_text;
+			this->render_text = nullptr;
+		}
+
+		size_t loopnum = text.size() / limit_length;
+		this->render_text = new wchar_t[limit_length * (loopnum + 1)];
+		memset(this->render_text, '\0', sizeof(wchar_t) * (limit_length * (loopnum + 1)));
+		CharToWChar(this->text.c_str(), this->render_text);
 	}
 }
 

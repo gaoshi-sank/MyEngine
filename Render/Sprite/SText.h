@@ -50,6 +50,9 @@ public:
 	// 水平格式，垂直格式，自动换行 
 	void ReSetLayout(int level_Style = 1, int vertical_Style = 1, int swrapping = 0);
 
+	// 重设文本
+	void ReSetText(const char* text = nullptr);
+
 	// 重设字体大小 
 	void ReSetFont(float font_size = 18.0f);
 
