@@ -189,23 +189,3 @@ void UI_Lable::SetVisiable(bool visible) {
 
 	this->window_visible = visible;
 }
-
-// 设置回调
-void UI_Lable::Event_Hover(std::function<void(int* _param)> _hover) {
-	this->callback_hover = _hover;
-}
-
-// 设置回调 - 按下
-void UI_Lable::Event_Down(std::function<void(int* _param)> _down) {
-
-}
-
-// 设置回调 - 放开
-void UI_Lable::Event_Up(std::function<void(int* _param)> _up) {
-
-}
-
-// 设置回调 - 点击
-void UI_Lable::Event_Click(std::function<void(int* _param)> _hover) {
-
-}

@@ -141,17 +141,51 @@ void UI_Button::CheckEvent(unsigned int* param) {
 		auto message = param[1];
 		if (window_mouse) {
 			if (message == WM_LBUTTONDOWN) {
-				// 区域内点击
-				if (window_inrect && click_state == 0) {
-					click_state = 1;
+				// 区域内按下
+				if (window_inrect) {
+					// 未按下
+					if (click_state == 0) {
+						click_state = 1;
+
+						// 按下事件
+						if (callback_down) {
+							callback_down(nullptr);
+						}
+					}
+				}
+				// 区域外按下
+				else {
+					// 未按下状态
+					click_state = 0;
 				}
 			}
 			else if (message == WM_LBUTTONUP) {
 				// 区域内放开
-				if (window_inrect && click_state == 1) {
-					// 出发点击事件
+				if (window_inrect) {
+					// 之前按下过
+					if (click_state == 1) {
+						// 出发点击事件
+						if (callback_click) {
+							callback_click(nullptr);
+						}
+					}
 
-					click_state = 0;
+					// 出发放开事件
+					if (callback_up) {
+						callback_up(nullptr);
+					}
+				}
+
+				// 修改状态
+				click_state = 0;
+			}
+			else if (message == WM_MOUSEMOVE) {
+				// 在区域内移动
+				if (window_inrect) {
+					// 触发悬停事件
+					if (callback_hover) {
+						callback_hover(nullptr);
+					}
 				}
 			}
 		}
@@ -294,4 +328,25 @@ void UI_Button::SetVisiable(bool visible) {
 	}
 
 	this->window_visible = visible;
+}
+
+
+// 设置回调
+void UI_Button::Event_Hover(std::function<void(int* _param)> _hover) {
+	this->callback_hover = _hover;
+}
+
+// 设置回调 - 按下
+void UI_Button::Event_Down(std::function<void(int* _param)> _down) {
+	this->callback_down = _down;
+}
+
+// 设置回调 - 放开
+void UI_Button::Event_Up(std::function<void(int* _param)> _up) {
+	this->callback_up = _up;
+}
+
+// 设置回调 - 点击
+void UI_Button::Event_Click(std::function<void(int* _param)> _click) {
+	this->callback_click = _click;
 }

@@ -5,7 +5,7 @@
 #include "UI_Lable.h"
 
 // 按钮UI
-class UI_Button : public UI_Lable {
+class UI_Button : public UI_Lable, private UI_TriggerFunction {
 private:
 	std::vector<SImage*> list_image;	// 图像列表
 	SText* _text;						// 文本
@@ -64,6 +64,18 @@ public:
 
 	// 设置可见性
 	virtual void SetVisiable(bool visible = false);
+
+	// 设置回调 - 悬停
+	virtual void Event_Hover(std::function<void(int* _param)> _hover);
+
+	// 设置回调 - 按下
+	virtual void Event_Down(std::function<void(int* _param)> _down);
+
+	// 设置回调 - 放开
+	virtual void Event_Up(std::function<void(int* _param)> _up);
+
+	// 设置回调 - 点击
+	virtual void Event_Click(std::function<void(int* _param)> _hover);
 };
 
 
