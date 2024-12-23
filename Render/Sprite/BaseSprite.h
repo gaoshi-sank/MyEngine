@@ -2,7 +2,6 @@
 #define _BaseSprite_h_
 
 #include "../Render.h"	// 渲染器
-#include <iostream>		// 标准组件
 
 // 声明
 const int limit_length = 1024;

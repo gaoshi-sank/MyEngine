@@ -1,7 +1,7 @@
 #ifndef _RenderFactory_h_
 #define _RenderFactory_h_
 
-#include <iostream>
+
 #include "Render.h"
 
 

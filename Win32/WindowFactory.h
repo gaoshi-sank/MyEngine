@@ -3,7 +3,7 @@
 
 // 包含库
 #include <Windows.h>
-#include <memory>
+#include "../EngineManager/EngineConfig.h"
 
 // 类前置声明
 class Window;

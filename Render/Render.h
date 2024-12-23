@@ -3,10 +3,8 @@
 
 #include <Windows.h>
 #include <Windowsx.h>
-#include <iostream>
-#include <vector>
+#include "../EngineManager/EngineConfig.h"
 
-using namespace std;
 
 // ³éÏóäÖÈ¾Àà
 class Render {

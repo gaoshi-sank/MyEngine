@@ -1,9 +1,7 @@
 #ifndef _UIFactory_h_
 #define _UIFactory_h_
 
-#include <iostream>
-#include <mutex>
-#include <vector>
+#include "../EngineManager/EngineConfig.h"
 #include "Control/UI_Lable.h"		// ±Í«©UI
 #include "Control/UI_Button.h"		// ∞¥≈•UI
 
