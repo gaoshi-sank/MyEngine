@@ -50,8 +50,10 @@ void subthread() {
     if(_test){
         _test->Create(testpath, 0, 0, 100, 50);
         _test->AddStaticText("Hello World!");
+        _test->Event_Click([=](int* param) {
+            int i = 0;
+        });
     }
-
 
     while (status) {
         // ¸üĞÂ
