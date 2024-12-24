@@ -27,6 +27,16 @@ public:
 	bool window_inrect;			// 区域内
 
 public:
+	// 枚举值
+	enum UIStyle {
+		UIStyle_Base = 0,
+		UIStyle_Lable,
+		UIStyle_Button,
+		UIStyle_Contain,
+		UIStyle_CheckBox
+	};
+
+public:
 	// 构造
 	UI_Base();
 

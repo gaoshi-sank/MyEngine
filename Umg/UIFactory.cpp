@@ -71,6 +71,26 @@ void UIFactory::CheckEvent(unsigned int* param) {
 	}
 }
 
+// 复选框事件处理
+void UIFactory::CheckBoxParam(int ui_id, int group_id, int state) {
+	if (g_ui) {
+		// 遍历
+		for (auto& _ui : g_ui->list) {
+			if (_ui && _ui->window_id != 0x00 && !_ui->window_release && _ui->window_id != ui_id) {
+				// 复选框
+				if (_ui->window_style == UI_Base::UIStyle_CheckBox) {
+					auto checkbox = reinterpret_cast<UI_CheckBox*>(_ui);
+
+					// 同组 - 其他做反选
+					if (checkbox->group == group_id) {
+						checkbox->SetCheckBoxType((state == 1) ? 0 : 1);
+					}
+				}
+			}
+		}
+	}
+}
+
 // 更新
 void UIFactory::Update() {
 	if (g_ui) {

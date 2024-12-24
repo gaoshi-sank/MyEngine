@@ -1,19 +1,21 @@
-#include "UI_Button.h"
+#include "UI_CheckBox.h"
+
+#include "UI_CheckBox.h"
 #include "../UIFactory.h"
 
 // 构造
-UI_Button::UI_Button() {
+UI_CheckBox::UI_CheckBox() {
 	_text = nullptr;
-	click_state = 0;
-	button_style = ButtonStyle_Once;
+	check_state = 0;
+	button_style = CheckBoxStyle_OneOnce;
 	button_state = 0;
 	button_index = 0;
-	window_style = UIStyle_Button;
+	window_style = UIStyle_CheckBox;
 	UIFactory::AddWindow(this);
 }
 
 // 析构
-UI_Button::~UI_Button() {
+UI_CheckBox::~UI_CheckBox() {
 	// 图像
 	if (!list_image.empty()) {
 		for (auto& _image : list_image) {
@@ -32,12 +34,12 @@ UI_Button::~UI_Button() {
 	}
 }
 
-void UI_Button::PreRelease() {
+void UI_CheckBox::PreRelease() {
 	window_release = true;
 };
 
 // 创建
-bool UI_Button::Create() {
+bool UI_CheckBox::Create() {
 	if (window_release) {
 		return false;
 	}
@@ -46,7 +48,7 @@ bool UI_Button::Create() {
 
 // 创建单图类按钮（包含四个状态的图像）
 // 参数：位置和大小
-bool UI_Button::Create(const std::string& filename, int x, int y, int w, int h) {
+bool UI_CheckBox::Create(const std::string& filename, int x, int y, int w, int h) {
 	if (!Create()) {
 		return false;
 	}
@@ -71,7 +73,7 @@ bool UI_Button::Create(const std::string& filename, int x, int y, int w, int h) 
 		}
 
 		// 设置按钮风格
-		button_style = ButtonStyle_Once;
+		button_style = CheckBoxStyle_OneOnce;
 	}
 
 	SetLocation(x, y);
@@ -81,7 +83,7 @@ bool UI_Button::Create(const std::string& filename, int x, int y, int w, int h) 
 
 // 增加四个状态图像
 // 普通，区域内，按下，失效
-bool UI_Button::Create(const std::string& out, const std::string& in, const std::string& down, const std::string& disable) {
+bool UI_CheckBox::Create(const std::string& out, const std::string& in, const std::string& down, const std::string& disable) {
 	if (!Create()) {
 		return false;
 	}
@@ -95,10 +97,10 @@ bool UI_Button::Create(const std::string& out, const std::string& in, const std:
 			list_image.push_back(_image);
 		}
 		return true;
-	};
+		};
 
 	// 设置按钮风格
-	button_style = ButtonStyle_Four;
+	button_style = CheckBoxStyle_OneFour;
 	auto ret = true;
 	ret &= build_func(out);
 	ret &= build_func(in);
@@ -109,7 +111,7 @@ bool UI_Button::Create(const std::string& out, const std::string& in, const std:
 }
 
 // 增加静态文本
-void UI_Button::AddStaticText(const std::string& text) {
+void UI_CheckBox::AddStaticText(const std::string& text) {
 	if (window_release) {
 		return;
 	}
@@ -130,7 +132,7 @@ void UI_Button::AddStaticText(const std::string& text) {
 
 
 // 更新事件
-void UI_Button::CheckEvent(unsigned int* param) {
+void UI_CheckBox::CheckEvent(unsigned int* param) {
 	UI_Base::CheckEvent(param);
 
 	if (window_release || !param) {
@@ -144,41 +146,16 @@ void UI_Button::CheckEvent(unsigned int* param) {
 			if (message == WM_LBUTTONDOWN) {
 				// 区域内按下
 				if (window_inrect) {
-					// 未按下
-					if (click_state == 0) {
-						click_state = 1;
+					check_state = (check_state == 1) ? 0 : 1;
 
-						// 按下事件
-						if (callback_down) {
-							callback_down(nullptr);
-						}
+					// 触发复选框事件
+					UIFactory::CheckBoxParam(this->window_id, this->group, check_state);
+
+					// 按下事件
+					if (callback_down) {
+						callback_down(nullptr);
 					}
 				}
-				// 区域外按下
-				else {
-					// 未按下状态
-					click_state = 0;
-				}
-			}
-			else if (message == WM_LBUTTONUP) {
-				// 区域内放开
-				if (window_inrect) {
-					// 之前按下过
-					if (click_state == 1) {
-						// 出发点击事件
-						if (callback_click) {
-							callback_click(nullptr);
-						}
-					}
-
-					// 出发放开事件
-					if (callback_up) {
-						callback_up(nullptr);
-					}
-				}
-
-				// 修改状态
-				click_state = 0;
 			}
 			else if (message == WM_MOUSEMOVE) {
 				// 在区域内移动
@@ -197,27 +174,37 @@ void UI_Button::CheckEvent(unsigned int* param) {
 }
 
 // 更新
-void UI_Button::Update() {
+void UI_CheckBox::Update() {
 	if (window_release) {
 		return;
 	}
 
 	// 更新状态
-	if (window_inrect) {
-		if (click_state == 1) {
+	// 单图资源类型
+	if (button_style == CheckBoxStyle_OneOnce || button_style == CheckBoxStyle_OneFour) {
+		if (check_state == 1) {
 			button_state = 3;
 		}
 		else {
-			button_state = 2;
+			if (window_inrect) {
+				button_state = 2;
+			}
+			else {
+				button_state = 1;
+			}
 		}
 	}
-	else {
+	// 切换资源类型
+	else if (button_style == CheckBoxStyle_ChangeOption) {
 		button_state = 1;
+		if (check_state == 1) {
+			button_state = 2;
+		}
 	}
 
 	// 状态更新
 	if (!list_image.empty()) {
-		if (button_style == ButtonStyle_Once) {
+		if (button_style == CheckBoxStyle_OneOnce) {
 			auto& _image = list_image[0];
 
 			// 设置裁剪
@@ -233,14 +220,16 @@ void UI_Button::Update() {
 			// 更新
 			_image->Update();
 		}
-		else if (button_style == ButtonStyle_Four) {
+		else if (button_style == CheckBoxStyle_OneFour) {
 			button_index = button_state - 1;
 			if (button_index >= 0 && button_index < list_image.size()) {
 				list_image[button_index]->Update();
 			}
 		}
+		else if (button_style == CheckBoxStyle_ChangeOption) {
+
+		}
 	}
-	
 
 	// 文本
 	if (_text) {
@@ -250,17 +239,17 @@ void UI_Button::Update() {
 }
 
 // 绘制
-void UI_Button::Draw() {
+void UI_CheckBox::Draw() {
 	if (window_release) {
 		return;
 	}
 
 	// 绘制图像
 	if (!list_image.empty()) {
-		if (button_style == ButtonStyle_Once) {
+		if (button_style == CheckBoxStyle_OneOnce) {
 			list_image[0]->Draw();
 		}
-		else if (button_style == ButtonStyle_Four) {
+		else if (button_style == CheckBoxStyle_OneFour) {
 			if (button_index >= 0 && button_index < list_image.size()) {
 				list_image[button_index]->Draw();
 			}
@@ -275,7 +264,7 @@ void UI_Button::Draw() {
 }
 
 // 设置位置
-void UI_Button::SetLocation(int x, int y) {
+void UI_CheckBox::SetLocation(int x, int y) {
 	if (window_release) {
 		return;
 	}
@@ -299,7 +288,7 @@ void UI_Button::SetLocation(int x, int y) {
 }
 
 // 设置大小
-void UI_Button::SetSize(int w, int h) {
+void UI_CheckBox::SetSize(int w, int h) {
 	if (window_release) {
 		return;
 	}
@@ -323,7 +312,7 @@ void UI_Button::SetSize(int w, int h) {
 }
 
 // 设置可见性
-void UI_Button::SetVisiable(bool visible) {
+void UI_CheckBox::SetVisiable(bool visible) {
 	if (window_release) {
 		return;
 	}
@@ -331,23 +320,35 @@ void UI_Button::SetVisiable(bool visible) {
 	this->window_visible = visible;
 }
 
+// 设置单选
+void UI_CheckBox::SetCheckBoxType(int _type) {
+	check_state = _type;
+}
+
+// 设置所属组
+void UI_CheckBox::SetGroupId(int _id) {
+	this->group = _id;
+}
 
 // 设置回调
-void UI_Button::Event_Hover(std::function<void(int* _param)> _hover) {
-	this->callback_hover = _hover;
+void UI_CheckBox::Event_Hover(std::function<void(int* _param)> _hover) {
+	// this->callback_hover = _hover;
+	// 复选框 - 不触发当前事件
 }
 
 // 设置回调 - 按下
-void UI_Button::Event_Down(std::function<void(int* _param)> _down) {
+void UI_CheckBox::Event_Down(std::function<void(int* _param)> _down) {
 	this->callback_down = _down;
 }
 
 // 设置回调 - 放开
-void UI_Button::Event_Up(std::function<void(int* _param)> _up) {
-	this->callback_up = _up;
+void UI_CheckBox::Event_Up(std::function<void(int* _param)> _up) {
+	// this->callback_up = _up;
+	// 复选框 - 不触发当前事件
 }
 
 // 设置回调 - 点击
-void UI_Button::Event_Click(std::function<void(int* _param)> _click) {
-	this->callback_click = _click;
+void UI_CheckBox::Event_Click(std::function<void(int* _param)> _click) {
+	// this->callback_click = _click;
+	// 复选框 - 不触发当前事件
 }

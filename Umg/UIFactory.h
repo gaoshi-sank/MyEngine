@@ -4,7 +4,7 @@
 #include "../EngineManager/EngineConfig.h"
 #include "Control/UI_Lable.h"		// 标签UI
 #include "Control/UI_Button.h"		// 按钮UI
-
+#include "Control/UI_CheckBox.h"	// 按钮UI
 
 // UI工厂
 class UIFactory {
@@ -40,6 +40,9 @@ public:
 
 	// 事件驱动
 	static void CheckEvent(unsigned int* param);
+
+	// 复选框事件处理
+	static void CheckBoxParam(int ui_id, int group_id, int state);
 
 	// 更新
 	static void Update();

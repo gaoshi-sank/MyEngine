@@ -5,6 +5,7 @@
 UI_Lable::UI_Lable() {
 	_image = nullptr;
 	_text = nullptr;
+	window_style = UIStyle_Lable;
 	UIFactory::AddWindow(this);
 }
 
@@ -76,31 +77,7 @@ void UI_Lable::AddStaticText(const std::string& text) {
 
 // 事件驱动
 void UI_Lable::CheckEvent(unsigned int* param) {
-	if (window_release || !param) {
-		return;
-	}
-	int param_len = param[0];
-	if (param_len >= 2) {
-		auto message = param[1];
-
-		// 基础光标位置
-		if (window_mouse && message == WM_MOUSEMOVE) {
-			// 默认不在窗口
-			window_inrect = false;
-
-			// 正确获取
-			if (param_len >= 3) {
-				LPARAM lParam = (LPARAM)param[2];
-				mouse_posx = GET_X_LPARAM(lParam);
-				mouse_posy = GET_Y_LPARAM(lParam);
-
-				// 判断区域内
-				if (Point_In_Rect(mouse_posx, mouse_posy, window_x, window_y, window_width, window_height)) {
-					window_inrect = true;
-				}
-			}
-		}
-	}
+	// 标签UI不参与
 }
 
 
