@@ -21,7 +21,8 @@ private:
 	enum CheckBoxStyle {
 		CheckBoxStyle_OneOnce = 1,		// 单选按钮 单图
 		CheckBoxStyle_OneFour,			// 单选按钮 多图
-		CheckBoxStyle_ChangeOption,		// 切换动画 
+		CheckBoxStyle_ChangeOp_Once,	// 切换动画 单图
+		CheckBoxStyle_ChangeOp_Two,		// 切换动画 多图
 		CheckBoxStyle_Switch,			// 框框
 	};
 
@@ -39,13 +40,16 @@ public:
 	// 创建
 	virtual bool Create();
 
-	// 创建单图类按钮（包含四个状态的图像）
-	// 参数：位置和大小
-	virtual bool Create(const std::string& filename, int x, int y, int w, int h);
+	// 创建单图类按钮
+	// 参数: 资源风格（4图和2图）
+	// 参数: 位置和大小
+	virtual bool Create(const std::string& filename, int resStyle, int x, int y, int w, int h);
 
 	// 增加四个状态图像
 	// 普通，区域内，按下，失效
 	virtual bool Create(const std::string& out, const std::string& in, const std::string& down, const std::string& disable);
+
+	// 
 
 	// 增加静态文本
 	virtual void AddStaticText(const std::string& text);
@@ -73,6 +77,9 @@ public:
 
 	// 设置所属组
 	virtual void SetGroupId(int _id);
+
+	// 获取单选状态
+	virtual bool GetCheckState();
 
 	// 设置回调 - 悬停
 	virtual void Event_Hover(std::function<void(int* _param)> _hover);

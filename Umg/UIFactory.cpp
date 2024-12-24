@@ -81,8 +81,8 @@ void UIFactory::CheckBoxParam(int ui_id, int group_id, int state) {
 				if (_ui->window_style == UI_Base::UIStyle_CheckBox) {
 					auto checkbox = reinterpret_cast<UI_CheckBox*>(_ui);
 
-					// 同组 - 其他做反选
-					if (checkbox->group == group_id) {
+					// 同组单选框 - 其他做反选
+					if (checkbox->group == group_id && checkbox->contain_type == 0) {
 						checkbox->SetCheckBoxType((state == 1) ? 0 : 1);
 					}
 				}

@@ -48,12 +48,16 @@ bool UI_CheckBox::Create() {
 
 // 创建单图类按钮（包含四个状态的图像）
 // 参数：位置和大小
-bool UI_CheckBox::Create(const std::string& filename, int x, int y, int w, int h) {
+bool UI_CheckBox::Create(const std::string& filename, int resStyle, int x, int y, int w, int h) {
 	if (!Create()) {
 		return false;
 	}
 
 	if (!filename.empty()) {
+		// 限制
+		int resLine = (resStyle == 4) ? 4 : 2;
+
+		// 生成图像
 		auto _image = new SImage(filename.c_str());
 		if (!_image) {
 			return false;
@@ -64,7 +68,7 @@ bool UI_CheckBox::Create(const std::string& filename, int x, int y, int w, int h
 			int height = 0;
 			auto ret = _image->GetImageSize(width, height);
 			if (ret && width != 0 && height != 0) {
-				auto srcw = width / 4;
+				auto srcw = width / resLine;
 				_image->SetCrop(0, 0, srcw, height);
 			}
 
@@ -195,7 +199,7 @@ void UI_CheckBox::Update() {
 		}
 	}
 	// 切换资源类型
-	else if (button_style == CheckBoxStyle_ChangeOption) {
+	else if (button_style == CheckBoxStyle_ChangeOp_Once || button_style == CheckBoxStyle_ChangeOp_Two) {
 		button_state = 1;
 		if (check_state == 1) {
 			button_state = 2;
@@ -204,15 +208,16 @@ void UI_CheckBox::Update() {
 
 	// 状态更新
 	if (!list_image.empty()) {
-		if (button_style == CheckBoxStyle_OneOnce) {
+		if (button_style == CheckBoxStyle_OneOnce || button_style == CheckBoxStyle_ChangeOp_Once) {
 			auto& _image = list_image[0];
+			int resLine = (button_style == CheckBoxStyle_OneOnce) ? 4 : 2;
 
 			// 设置裁剪
 			int width = 0;
 			int height = 0;
 			auto ret = _image->GetImageSize(width, height);
 			if (ret && width != 0 && height != 0) {
-				auto srcw = width / 4;
+				auto srcw = width / resLine;
 				auto srcx = (button_state - 1) * srcw;
 				_image->SetCrop(srcx, 0, srcw, height);
 			}
@@ -220,14 +225,11 @@ void UI_CheckBox::Update() {
 			// 更新
 			_image->Update();
 		}
-		else if (button_style == CheckBoxStyle_OneFour) {
+		else if (button_style == CheckBoxStyle_OneFour || button_style == CheckBoxStyle_ChangeOp_Two) {
 			button_index = button_state - 1;
 			if (button_index >= 0 && button_index < list_image.size()) {
 				list_image[button_index]->Update();
 			}
-		}
-		else if (button_style == CheckBoxStyle_ChangeOption) {
-
 		}
 	}
 
@@ -328,6 +330,11 @@ void UI_CheckBox::SetCheckBoxType(int _type) {
 // 设置所属组
 void UI_CheckBox::SetGroupId(int _id) {
 	this->group = _id;
+}
+
+// 获取单选状态
+bool UI_CheckBox::GetCheckState() {
+	return check_state == 1;
 }
 
 // 设置回调
