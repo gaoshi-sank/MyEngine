@@ -46,14 +46,18 @@ void subthread() {
     UIFactory::InitUIProvider();
 
     std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
-    UI_Button* _test = new UI_Button();
+    UI_CheckBox* _test = new UI_CheckBox();
     if(_test){
         _test->Create(testpath, 0, 0, 100, 50);
         _test->AddStaticText("Hello World!");
-        _test->Event_Click([=](int* param) {
-            int i = 0;
-        });
     }
+
+    UI_CheckBox* _test2 = new UI_CheckBox();
+    if (_test2) {
+        _test2->Create(testpath, 150, 80, 100, 50);
+        _test2->AddStaticText("Hello World!");
+    }
+
 
     while (status) {
         // ¸üÐÂ
