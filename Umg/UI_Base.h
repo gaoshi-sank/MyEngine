@@ -13,6 +13,7 @@ public:
 	unsigned int window_style;	// 窗口类型 
 	bool window_visible;		// 可见性
 	bool window_release;		// 释放性
+	bool window_top;			// 最顶层
 	bool window_key;			// 可触发键盘事件 
 	bool window_mouse;			// 可触发鼠标事件
 	int window_renderlevel;		// 窗口渲染层
