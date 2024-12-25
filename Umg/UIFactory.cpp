@@ -174,11 +174,35 @@ bool UIFactory::GetLevelTop(int pos_x, int pos_y, UI_Base* other) {
 	if (g_ui) {
 		// 获取可见-可用UI控件
 		std::vector<UI_Base*> alltop;
-
+		for (int i = (int)g_ui->list.size() - 1; i >= 0;i--) {
+			auto ui = g_ui->list[i];
+			// 可见 -  符合当前区域 
+			if (ui && ui->window_visible) {
+				if (Point_In_Rect(pos_x, pos_y, ui->window_x, ui->window_y, ui->window_width, ui->window_height)) {
+					alltop.push_back(ui);
+				}
+			}
+		}
 
 		// 计算
 		if (!alltop.empty()) {
+			// 排序函数 
+			auto func = [](UI_Base* left, UI_Base* right) -> bool {
+				if (left != right) {
+					if (left->window_renderlevel > right->window_renderlevel) {
+						return true;
+					}
+				}
+				return false;
+			};
+
+			// 重新排序渲染顺序 
+			std::sort(alltop.begin(), alltop.end(), func);
 			
+			// 直接比较最大值
+			if (alltop[0] == other) {
+				return true;
+			}
 		}
 	}
 	return false;
