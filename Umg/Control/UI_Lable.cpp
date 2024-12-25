@@ -1,12 +1,10 @@
 #include "UI_Lable.h"
-#include "../UIFactory.h"
 
 // ¹¹Ôì
 UI_Lable::UI_Lable() {
 	_image = nullptr;
 	_text = nullptr;
 	window_style = UIStyle_Lable;
-	UIFactory::AddWindow(this);
 }
 
 // Îö¹¹

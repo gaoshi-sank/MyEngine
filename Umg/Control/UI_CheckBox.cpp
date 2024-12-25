@@ -1,6 +1,4 @@
 #include "UI_CheckBox.h"
-
-#include "UI_CheckBox.h"
 #include "../UIFactory.h"
 
 // 构造
@@ -11,7 +9,6 @@ UI_CheckBox::UI_CheckBox() {
 	button_state = 0;
 	button_index = 0;
 	window_style = UIStyle_CheckBox;
-	UIFactory::AddWindow(this);
 }
 
 // 析构
@@ -46,9 +43,10 @@ bool UI_CheckBox::Create() {
 	return true;
 }
 
-// 创建单图类按钮（包含四个状态的图像）
-// 参数：位置和大小
-bool UI_CheckBox::Create(const std::string& filename, int resStyle, int x, int y, int w, int h) {
+// 创建单图类按钮
+// 参数: 位置和大小
+// 参数: 资源风格（4图和2图）
+bool UI_CheckBox::Create(const std::string& filename, int x, int y, int w, int h, int resStyle) {
 	if (!Create()) {
 		return false;
 	}
@@ -140,6 +138,10 @@ void UI_CheckBox::CheckEvent(unsigned int* param) {
 	UI_Base::CheckEvent(param);
 
 	if (window_release || !param) {
+		return;
+	}
+
+	if (!window_top) {
 		return;
 	}
 

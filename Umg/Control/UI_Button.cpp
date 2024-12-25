@@ -9,7 +9,6 @@ UI_Button::UI_Button() {
 	button_state = 0;
 	button_index = 0;
 	window_style = UIStyle_Button;
-	UIFactory::AddWindow(this);
 }
 
 // Îö¹¹
@@ -134,6 +133,10 @@ void UI_Button::CheckEvent(unsigned int* param) {
 	UI_Base::CheckEvent(param);
 
 	if (window_release || !param) {
+		return;
+	}
+
+	if (!window_top) {
 		return;
 	}
 

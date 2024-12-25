@@ -41,9 +41,9 @@ public:
 	virtual bool Create();
 
 	// 创建单图类按钮
-	// 参数: 资源风格（4图和2图）
 	// 参数: 位置和大小
-	virtual bool Create(const std::string& filename, int resStyle, int x, int y, int w, int h);
+	// 参数: 资源风格（4图和2图）
+	virtual bool Create(const std::string& filename, int x = 0, int y = 0, int w = 0, int h = 0, int resStyle = 4);
 
 	// 增加四个状态图像
 	// 普通，区域内，按下，失效
