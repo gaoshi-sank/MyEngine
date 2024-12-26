@@ -25,6 +25,15 @@ Timer::~Timer() {
 
 }
 
+// 设置计时间隔
+void Timer::setLine(float timenumber) {
+	this->option_timer = timenumber;
+}
+
+// 设置是否循环
+void Timer::setLoop(bool option) {
+	this->option_loop = option;
+}
 
 // 开始计时 
 void Timer::start() {

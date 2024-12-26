@@ -36,6 +36,12 @@ public:
 	// 析构
 	~Timer();
 
+	// 设置计时间隔
+	void setLine(float timenumber); 
+
+	// 设置是否循环
+	void setLoop(bool option);
+
 	// 开始计时 
 	void start();
 

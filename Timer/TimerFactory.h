@@ -6,7 +6,10 @@
 // 时间管理类
 class TimerFactory {
 private:
-
+	static std::thread* mainThread;			// 主线程句柄
+	static int thread_status;				// 主线程状态
+	static std::vector<Timer*> LisTimer;	// 计时器列表
+	static std::mutex lock_List;			// 列表 - 锁
 
 public:
 	// 初始化时间工厂
@@ -19,6 +22,11 @@ public:
 	// 停止计时器
 	// 计时器指针
 	static void StopTimer(Timer* handle = nullptr);
+
+private:
+	// 线程运行
+	static void ThreadLoop();
+
 
 };
 
