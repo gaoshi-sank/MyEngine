@@ -1,12 +1,5 @@
 #include <Windows.h>
-#include <iostream>
-#include <memory>
-#include <thread>
-#include "Win32/WindowFactory.h"
-#include "Render/RenderFactory.h"
-#include "Umg/UIFactory.h"
-#include "Timer/TimerFactory.h"
-#include "Render/Sprite/Animation.h"
+#include "EngineManager/EngineProvider.h"
 
 using namespace std;
 int status = 1;

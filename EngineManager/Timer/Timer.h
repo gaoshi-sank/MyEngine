@@ -2,7 +2,7 @@
 #define _Timer_h_
 
 #include <Windows.h>
-#include "../EngineManager/EngineConfig.h"
+#include "../EngineConfig.h"
 
 // 自定义时间类
 class Timer {

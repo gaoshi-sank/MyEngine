@@ -1,7 +1,7 @@
 #ifndef _UIFactory_h_
 #define _UIFactory_h_
 
-#include "../EngineManager/EngineConfig.h"
+#include "../EngineConfig.h"
 #include "Control/UI_Lable.h"		// ±Í«©UI
 #include "Control/UI_Button.h"		// ∞¥≈•UI
 #include "Control/UI_CheckBox.h"	// ∞¥≈•UI

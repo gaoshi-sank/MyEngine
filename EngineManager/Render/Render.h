@@ -3,7 +3,7 @@
 
 #include <Windows.h>
 #include <Windowsx.h>
-#include "../EngineManager/EngineConfig.h"
+#include "../EngineConfig.h"
 
 
 // ³éÏóäÖÈ¾Àà
