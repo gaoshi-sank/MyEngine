@@ -6,6 +6,7 @@
 #include "Render/RenderFactory.h"
 #include "Umg/UIFactory.h"
 #include "Timer/TimerFactory.h"
+#include "Render/Sprite/Animation.h"
 
 using namespace std;
 int status = 1;
@@ -33,8 +34,6 @@ int APIENTRY wWinMain(
 
         // 结束处理
         status = 0;
-        UIFactory::Release();
-        TimerFactory::Release();
     }
 
     subhandle->join();
@@ -48,22 +47,20 @@ void subthread() {
     UIFactory::InitUIProvider();
     TimerFactory::InitTimerFactory();
 
-    std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
-    UI_Button* _test = new UI_Button();
-    if(_test){
-        _test->Create(testpath, 100, 50, 100, 50);
-        _test->AddStaticText("Hello World!");
+    Animation* _test = new Animation();
+    if (_test) {
+        std::string path = "C:\\Users\\asus\\Pictures\\39\\Units\\1-1.png";
+        for (auto i = 0; i < 8;i++) {
+            SImage* newone = new SImage(path.c_str());
+            if (newone) {
+                newone->SetLocaiton(50, 50);
+                newone->SetSize(36, 36);
+                newone->SetCrop(i * 36, 0, 36, 36);
+            }
+            _test->AddSprite(newone);
+        }
+        _test->SetPlaySpeed(8);
     }
-
-    UI_Button* _test2 = new UI_Button();
-    if (_test2) {
-        _test2->Create(testpath, 150, 50, 100, 50);
-        _test2->AddStaticText("Hello World!");
-    }
-
-    TimerFactory::SetTimer([](int* param) {
-        status = 0;
-    }, 5000.0f, false);
 
     while (status) {
         // 更新
@@ -79,10 +76,16 @@ void subthread() {
                 // 渲染UI
                 UIFactory::Draw();
 
+                if (_test) {
+                    _test->Draw();
+                }
 
                 render->EndPlay();
             }
         }
     }
 
+
+    UIFactory::Release();
+    TimerFactory::Release();
 }
