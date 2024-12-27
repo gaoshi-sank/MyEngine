@@ -8,20 +8,21 @@ class TimerFactory {
 private:
 	static std::thread* mainThread;			// 主线程句柄
 	static int thread_status;				// 主线程状态
-	static std::vector<Timer*> LisTimer;	// 计时器列表
+	static std::vector<Timer*> ListTimer;	// 计时器列表
 	static std::mutex lock_List;			// 列表 - 锁
 
 public:
-	// 初始化时间工厂
+	// 初始化计时器工厂
 	static void InitTimerFactory();
+
+	// 停止计时器工厂
+	static void Release();
 
 	// 创建计时器
 	// 回调函数，触发间隔，是否循环
 	static Timer* SetTimer(std::function<void(int*)> callback_handle, float tiggerTimer, bool isLoop);
 
-	// 停止计时器
-	// 计时器指针
-	static void StopTimer(Timer* handle = nullptr);
+
 
 private:
 	// 线程运行

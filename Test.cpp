@@ -5,6 +5,7 @@
 #include "Win32/WindowFactory.h"
 #include "Render/RenderFactory.h"
 #include "Umg/UIFactory.h"
+#include "Timer/TimerFactory.h"
 
 using namespace std;
 int status = 1;
@@ -19,31 +20,33 @@ int APIENTRY wWinMain(
     _In_        LPWSTR    lpCmdLine,
     _In_        int       nCmdShow)
 {
+    std::thread* subhandle = nullptr;
     WindowFactory::SethInstance(hInstance);
     auto mainWindow = WindowFactory::Build(250, 80, 640, 480);
     if (mainWindow) {
         // 处理渲染器
         RenderFactory::InitRender(RenderFactory::RenderType_Direct2D, mainWindow->GetHandle(), 640, 480);
-        auto sub = new thread(subthread);
-        sub->detach();
+        subhandle = new thread(subthread);
 
         // Win32消息循环
         mainWindow->Process();
 
         // 结束处理
         status = 0;
+        UIFactory::Release();
+        TimerFactory::Release();
     }
 
-    while (status != 2);
+    subhandle->join();
 
     return 0;
 }
 
 void subthread() {
 
-
-    // 初始化UI套件
+    // 初始化模块
     UIFactory::InitUIProvider();
+    TimerFactory::InitTimerFactory();
 
     std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
     UI_Button* _test = new UI_Button();
@@ -58,6 +61,9 @@ void subthread() {
         _test2->AddStaticText("Hello World!");
     }
 
+    TimerFactory::SetTimer([](int* param) {
+        status = 0;
+    }, 5000.0f, false);
 
     while (status) {
         // 更新
@@ -78,6 +84,5 @@ void subthread() {
             }
         }
     }
-    status = 2;
 
 }

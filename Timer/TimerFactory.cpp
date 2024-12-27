@@ -2,17 +2,23 @@
 
 std::thread* TimerFactory::mainThread = nullptr;
 int TimerFactory::thread_status = 0;
+std::vector<Timer*> TimerFactory::ListTimer;
 std::mutex TimerFactory::lock_List;
 
 // 初始化时间工厂
 void TimerFactory::InitTimerFactory() {
-
-
 	// 建立线程
 	if (!mainThread) {
 		thread_status = 1;
 		mainThread = new std::thread(ThreadLoop);
-		mainThread->detach();
+	}
+}
+
+// 停止计时器工厂
+void TimerFactory::Release() {
+	if (mainThread) {
+		thread_status = 0;
+		mainThread->join();
 	}
 }
 
@@ -26,15 +32,9 @@ Timer* TimerFactory::SetTimer(std::function<void(int* param)> callback_handle, f
 		_timer->start();
 
 		std::lock_guard<std::mutex> lock(lock_List);
-		LisTimer.push_back(_timer);
+		ListTimer.push_back(_timer);
 	}
 	return _timer;
-}
-
-// 停止计时器
-// 计时器指针
-void TimerFactory::StopTimer(Timer* handle) {
-
 }
 
 // 线程运行
@@ -50,16 +50,28 @@ void TimerFactory::ThreadLoop() {
 			std::lock_guard<std::mutex> lock(lock_List);
 
 			// 删除
-
+			std::vector<Timer*>::iterator it;
+			for (it = ListTimer.begin(); it != ListTimer.end();) {
+				bool iskeep = true;
+				if (*it && (*it)->isrelease()) {
+					auto del_node = (*it);
+					delete del_node;
+					del_node = nullptr;
+					iskeep = false;
+					it = ListTimer.erase(it);
+				}
+				if (iskeep) {
+					it++;
+				}
+			}
 
 			// 更新
-			for (auto& node : LisTimer) {
+			for (auto& node : ListTimer) {
 				if (node) {
 					node->update(mainTimer);
 				}
 			}
 		}
 	}
-	thread_status = 2;
 
 }
