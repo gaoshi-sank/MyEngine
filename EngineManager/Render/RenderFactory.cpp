@@ -48,7 +48,6 @@ void RenderFactory::InitRender(int renderType, ...) {
 			factory_render->direct2d_width = width;
 			factory_render->direct2d_height = height;
 
-
 			// ³õÊ¼»¯
 			factory_render->InitRender_Direct2D();
 		}
