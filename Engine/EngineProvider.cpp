@@ -71,6 +71,10 @@ void EngineProvider::BuildEngineStruct() {
 	// 构建UI系统
 	UIFactory::InitUIProvider();
 
+	// 构建Scenery系统
+	SceneManager::InitSceneManager();
+
+
 	// 构建独立线程
 	updateState = 1;
 	renderState = 1;
@@ -103,6 +107,9 @@ void EngineProvider::ThreadLoop_RunUpdate() {
 	while (updateState) {
 		// UI系统 更新
 		UIFactory::Update();
+
+		// Scene系统
+		SceneManager::UpdateScene();
 	}
 	{
 		std::unique_lock<std::mutex> lock(lock_update);
@@ -126,7 +133,8 @@ void EngineProvider::ThreadLoop_RunRender() {
 				// UI系统 渲染
 				UIFactory::Draw();
 
-
+				// Scene系统
+				SceneManager::DrawScene();
 
 				// 结束渲染
 				render->EndPlay();

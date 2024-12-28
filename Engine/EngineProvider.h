@@ -7,6 +7,7 @@
 #include "Umg/UIFactory.h"
 #include "Timer/TimerFactory.h"
 #include "Render/Sprite/Animation.h"
+#include "Scene/SceneManager.h"
 
 // 引擎管理类
 class EngineProvider {
