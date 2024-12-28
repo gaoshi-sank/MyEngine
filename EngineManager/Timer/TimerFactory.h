@@ -10,6 +10,8 @@ private:
 	static int thread_status;				// 主线程状态
 	static std::vector<Timer*> ListTimer;	// 计时器列表
 	static std::mutex lock_List;			// 列表 - 锁
+	static std::mutex lock_thread;				// 锁 - 线程
+	static std::condition_variable cv_thread;	// 条件 - 线程
 
 public:
 	// 初始化计时器工厂

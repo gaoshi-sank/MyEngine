@@ -34,6 +34,27 @@ SText::SText(const char* _text) : SText() {
 
 // 析构
 SText::~SText() {
+	// 渲染用文本
+	if (render_text) {
+		delete[] render_text;
+		render_text = nullptr;
+	}
+
+	// 文字格式-布局-画刷
+	if (text_format) {
+		delete text_format;
+		text_format = nullptr;
+	}
+
+	if (text_layout) {
+		delete text_layout;
+		text_layout = nullptr;
+	}
+
+	if (text_brash) {
+		delete text_brash;
+		text_brash = nullptr;
+	}
 
 }
 

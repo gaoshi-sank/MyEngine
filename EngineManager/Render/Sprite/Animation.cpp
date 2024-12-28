@@ -9,8 +9,20 @@ Animation::Animation() {
 
 // Îö¹¹
 Animation::~Animation() {
+	// ¼ÆÊ±Æ÷
 	if (_timer) {
 		_timer->exit();
+	}
+
+	// Í¼Ïñ
+	if (!ListSprite.empty()) {
+		for (auto& sprite : ListSprite) {
+			if (sprite) {
+				delete sprite;
+				sprite = nullptr;
+			}
+		}
+		ListSprite.clear();
 	}
 }
 

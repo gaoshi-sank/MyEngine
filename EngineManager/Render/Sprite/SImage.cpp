@@ -36,7 +36,6 @@ SImage::~SImage() {
 		delete _image;
 		_image = nullptr;
 	}
-
 }
 
 // ¸üÐÂ

@@ -1,9 +1,11 @@
 #include "TimerFactory.h"
 
-std::thread* TimerFactory::mainThread = nullptr;
-int TimerFactory::thread_status = 0;
-std::vector<Timer*> TimerFactory::ListTimer;
-std::mutex TimerFactory::lock_List;
+std::thread* TimerFactory::mainThread = nullptr;	// 线程句柄
+int TimerFactory::thread_status = 0;				// 线程状态
+std::vector<Timer*> TimerFactory::ListTimer;		// 计时器列表
+std::mutex TimerFactory::lock_List;					// 锁 - 计时器列表
+std::mutex TimerFactory::lock_thread;				// 锁 - 线程
+std::condition_variable TimerFactory::cv_thread;	// 条件 - 线程
 
 // 初始化时间工厂
 void TimerFactory::InitTimerFactory() {
@@ -11,15 +13,31 @@ void TimerFactory::InitTimerFactory() {
 	if (!mainThread) {
 		thread_status = 1;
 		mainThread = new std::thread(ThreadLoop);
+		mainThread->detach();
 	}
 }
 
 // 停止计时器工厂
 void TimerFactory::Release() {
-	if (mainThread) {
+	{
 		thread_status = 0;
-		mainThread->join();
+		std::unique_lock<std::mutex> lock(lock_thread);
+		cv_thread.wait(lock, [&]() {
+			return thread_status == 2;
+		});
 	}
+
+	// 释放计时器
+	std::vector<Timer*>::iterator it;
+	for (it = ListTimer.begin(); it != ListTimer.end();it++) {
+		if (*it) {
+			(*it)->exit();
+			delete (*it);
+			(*it) = nullptr;
+		}
+	}
+	ListTimer.clear();
+
 }
 
 // 创建计时器
@@ -73,5 +91,9 @@ void TimerFactory::ThreadLoop() {
 			}
 		}
 	}
-
+	{
+		std::unique_lock<std::mutex> lock(lock_thread);
+		thread_status = 2;
+		cv_thread.notify_one();
+	}
 }

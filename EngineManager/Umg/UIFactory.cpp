@@ -22,7 +22,16 @@ void UIFactory::InitUIProvider() {
 
 // ÊÍ·Å
 void UIFactory::Release() {
-
+	if (g_ui) {
+		for (auto i = 0; i < g_ui->list.size(); i++) {
+			auto& node = g_ui->list[i];
+			if (node) {
+				delete node;
+				node = nullptr;
+			}
+		}
+		g_ui->list.clear();
+	}
 }
 
 // Ìí¼Ó¿Ø¼þ

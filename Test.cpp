@@ -2,9 +2,6 @@
 #include "EngineManager/EngineProvider.h"
 
 
-// 函数声明
-void subthread();
-
 // 主函数
 int APIENTRY wWinMain(
     _In_        HINSTANCE hInstance,
