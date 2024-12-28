@@ -35,6 +35,16 @@ void Timer::setLoop(bool option) {
 	this->option_loop = option;
 }
 
+// 获取逝去时间
+double Timer::getOvertime() {
+	if (timer_state != TimerState_stop) {
+		QueryPerformanceCounter(&timer_end);
+		double elapsedTime = static_cast<double>(timer_start.QuadPart - timer_end.QuadPart) / (frequency.QuadPart * 1.0 / 1000);
+		return elapsedTime;
+	}
+	return 0.0f;
+}
+
 // 开始计时 
 void Timer::start() {
 	timer_state = TimerState_start;
@@ -66,7 +76,7 @@ void Timer::update(LARGE_INTEGER now_timer) {
 
 	// 开始
 	if (timer_state == TimerState_start) {
-		double elapsedTime = static_cast<double>(timer_start.QuadPart - timer_end.QuadPart) / (frequency.QuadPart / 1000);
+		double elapsedTime = static_cast<double>(timer_start.QuadPart - timer_end.QuadPart) / (frequency.QuadPart * 1.0 / 1000);
 		if (abs(elapsedTime) >= 0.001f && abs(elapsedTime) >= option_timer) {
 			timer_end = timer_start;
 			// 计时器到期
