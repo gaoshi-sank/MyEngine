@@ -1,6 +1,6 @@
 #include <Windows.h>
-#include "Engine/EngineProvider.h"
-
+#include "../Engine/EngineProvider.h"
+#include "Scene_Test.h"
 
 // Ö÷º¯Êý
 int APIENTRY wWinMain(
@@ -10,6 +10,9 @@ int APIENTRY wWinMain(
     _In_        int       nCmdShow)
 {
     EngineProvider::InitEngine(hInstance);
+
+    new Scene_Test();
+
     EngineProvider::RunEngine();
     return 0;
 }

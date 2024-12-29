@@ -1,0 +1,37 @@
+#ifndef _Scene_Test_h_
+#define _Scene_Test_h_
+
+
+#include "../Engine/EngineProvider.h"
+
+// 测试场景
+class Scene_Test : public Scene_Obejct {
+private:
+	SImage* _test;
+	bool isinit = false;
+
+public:
+	// 构造
+	Scene_Test();
+
+	// 析构
+	virtual ~Scene_Test();
+
+	// 初始化
+	virtual void Init() override;
+
+	// 释放
+	virtual void Release() override;
+
+	// 更新
+	virtual void Update() override;
+
+	// 渲染
+	virtual void Draw() override;
+
+	// 停止
+	virtual void Stop() override;
+
+};
+
+#endif // !_Scene_Test_h_
