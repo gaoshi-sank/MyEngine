@@ -34,6 +34,8 @@ private:
 	std::condition_variable cv_update;	// 条件 - 更新
 	std::condition_variable cv_render;	// 条件 - 渲染
 
+	// 配置
+	double setting_fps;		// 帧率
 
 public:
 	// 获取引擎
@@ -63,6 +65,13 @@ private:
 
 	// 等待线程结束
 	void WaittingThreadProcess();
+
+private:
+	// 读取配置文件
+	void ReadConfig();
+
+	// 获取配置 - 帧率
+	double GetConfig_Fps() const;
 
 };
 

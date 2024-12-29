@@ -12,6 +12,8 @@ EngineProvider::EngineProvider() {
 	updateState = 0;			// 更新 - 状态
 	renderState = 0;			// 渲染 - 状态
 
+	// 配置
+	setting_fps = 0;
 }
 
 // 析构
@@ -55,7 +57,7 @@ void EngineProvider::BuildEngineStruct() {
 	}
 
 	// 读取引擎配置文件
-
+	ReadConfig();
 
 	// 开始构建
 	// 构建计时器系统
@@ -103,14 +105,30 @@ void EngineProvider::MainRunLoop() {
 
 // 更新用线程
 void EngineProvider::ThreadLoop_RunUpdate() {
+	// 计时器
+	std::shared_ptr<Timer> update_timer = std::make_shared<Timer>();
+	update_timer->start();
 
+	// 更新循环
 	while (updateState) {
+		// 基础计时
+		update_timer->getStart();
+
 		// UI系统 更新
 		UIFactory::Update();
 
 		// Scene系统
 		SceneManager::UpdateScene();
+
+		// 结束计时
+		auto _time = update_timer->getOvertime();
+		auto fps_time = GetConfig_Fps();
+		if (fps_time > _time) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(fps_time - _time)));
+		}
 	}
+
+	// 修改状态值
 	{
 		std::unique_lock<std::mutex> lock(lock_update);
 		updateState = 2;
@@ -121,7 +139,15 @@ void EngineProvider::ThreadLoop_RunUpdate() {
 
 // 渲染用线程
 void EngineProvider::ThreadLoop_RunRender() {
+	// 计时器
+	std::shared_ptr<Timer> render_timer = std::make_shared<Timer>();
+	render_timer->start();
+
+	// 更新渲染
 	while (renderState) {
+		// 基础计时
+		render_timer->getStart();
+
 		// 渲染
 		auto renderFactory = RenderFactory::GetInstance();
 		if (renderFactory) {
@@ -140,7 +166,16 @@ void EngineProvider::ThreadLoop_RunRender() {
 				render->EndPlay();
 			}
 		}
+
+		// 结束计时
+		auto _time = render_timer->getOvertime();
+		auto fps_time = GetConfig_Fps();
+		if (fps_time > _time) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(fps_time - _time)));
+		}
 	}
+
+	// 修改状态值
 	{
 		std::unique_lock<std::mutex> lock(lock_render);
 		renderState = 2;
@@ -169,4 +204,16 @@ void EngineProvider::WaittingThreadProcess() {
 			return renderState == 2;
 		});
 	}
+}
+
+// 读取配置文件
+void EngineProvider::ReadConfig() {
+	// 构建初始值
+	setting_fps = 1000.0 / 60;	// 60fps
+
+}
+
+// 获取配置 - 帧率
+double EngineProvider::GetConfig_Fps() const {
+	return setting_fps;
 }

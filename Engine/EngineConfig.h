@@ -4,6 +4,7 @@
 // 包含库
 #include <iostream>				// 标准输入输出流
 #include <vector>				// stl组件 = 矢量
+#include <map>					// stl组件 - 键值对
 #include <mutex>				// 锁
 #include <memory>				// 内存
 #include <functional>			// 函数指针 - c++平替
