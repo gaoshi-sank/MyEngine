@@ -76,7 +76,6 @@ void EngineProvider::BuildEngineStruct() {
 	// 构建Scenery系统
 	SceneManager::InitSceneManager();
 
-
 	// 构建独立线程
 	updateState = 1;
 	renderState = 1;
@@ -100,7 +99,7 @@ void EngineProvider::MainRunLoop() {
 	UIFactory::Release();			// UI模块
 	RenderFactory::Release();		// 渲染器模块
 	TimerFactory::Release();		// 计时器模块
-
+	SceneManager::ReleaseScene();	// 场景模块
 }
 
 // 更新用线程
