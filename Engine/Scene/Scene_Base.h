@@ -3,8 +3,9 @@
 
 #include "../EngineConfig.h"
 
-// 基础场景类
-// 抽象类
+// 基础场景类 - 抽象类
+// 需要重载 - 初始化、释放、更新、绘制、停止
+// 构建实例对象时加入场景管理，无需手动管理
 class Scene_Base {
 public:
 	unsigned int scene_id;
