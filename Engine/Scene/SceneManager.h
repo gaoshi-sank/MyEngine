@@ -16,8 +16,8 @@ private:
 	static SceneManager* g_sceneManger;
 
 	// 属性
-	std::vector<Scene_Base*> ListScene;
-	std::mutex lock_List;
+	std::map<unsigned int, Scene_Base*> MapScene;	// 场景集合
+	unsigned int Scene_Index;						// 场景索引
 
 public:
 	// 初始化引擎
@@ -35,9 +35,21 @@ public:
 	// 绘制
 	static void DrawScene();
 
+	// 加入场景
+	void AddScene(Scene_Base* _scene);
+
+	// 切换场景
+	void SwitchScene(unsigned int scene_id);
+
+	// 删除场景
+	void DeleteScene(unsigned int scene_id);
 
 private:
+	// 更新
+	void Update();
 
+	// 渲染
+	void Draw();
 
 };
 
