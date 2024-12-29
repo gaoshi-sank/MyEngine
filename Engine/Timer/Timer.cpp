@@ -38,12 +38,13 @@ void Timer::setLoop(bool option) {
 // 单独计时
 void Timer::getStart() {
 	QueryPerformanceCounter(&timer_start);
+	QueryPerformanceCounter(&timer_end);
 }
 
 // 获取逝去时间
 double Timer::getOvertime() {
 	if (timer_state != TimerState_stop) {
-		QueryPerformanceCounter(&timer_end);
+		QueryPerformanceCounter(&timer_start);
 		double elapsedTime = static_cast<double>(timer_start.QuadPart - timer_end.QuadPart) / (frequency.QuadPart * 1.0 / 1000);
 		return elapsedTime;
 	}
