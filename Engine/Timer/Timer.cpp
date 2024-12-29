@@ -35,6 +35,11 @@ void Timer::setLoop(bool option) {
 	this->option_loop = option;
 }
 
+// 单独计时
+void Timer::getStart() {
+	QueryPerformanceCounter(&timer_start);
+}
+
 // 获取逝去时间
 double Timer::getOvertime() {
 	if (timer_state != TimerState_stop) {

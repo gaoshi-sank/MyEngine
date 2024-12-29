@@ -42,6 +42,9 @@ public:
 	// 设置是否循环
 	void setLoop(bool option);
 
+	// 单独计时
+	void getStart();
+
 	// 获取逝去时间
 	double getOvertime();
 
