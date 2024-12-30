@@ -5,8 +5,7 @@ static unsigned int id = 0x00;
 
 // ¹¹Ôì
 Scene_Base::Scene_Base() {
-	// ±àºÅ
-	scene_id = ++id;
+	scene_id = ++id;		// ±àºÅ
 }
 
 // Îö¹¹

@@ -9,12 +9,14 @@ const int limit_length = 1024;
 // 精灵类
 class Sprite {
 public:
-	// 绘制区
-	int draw_x, draw_y, draw_width, draw_height;
+	bool visiable;					// 可见性					
+	int draw_x, draw_y, 
+		draw_width, draw_height;	// 绘制区
 
 public:
 	// 构造
 	Sprite() {
+		visiable = true;
 		draw_x = draw_y = draw_width = draw_height = 0;
 	}
 

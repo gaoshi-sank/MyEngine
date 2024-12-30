@@ -21,7 +21,7 @@ void SceneManager::InitSceneManager() {
 	// 实例化
 	auto handle = GetInstance();
 	if (handle) {
-		handle->Init();
+
 	}
 }
 
@@ -55,10 +55,10 @@ void SceneManager::DrawScene() {
 }
 
 // 加入场景
-void SceneManager::AddScene(Scene_Obejct* _scene) {
-	if (_scene) {
+void SceneManager::AddScene(Scene_Base* _scene) {
+	if (_scene && g_sceneManger) {
 		bool isnone = true;
-		for (auto& mapping : MapScene) {
+		for (auto& mapping : g_sceneManger->MapScene) {
 			auto& scene = mapping.second;
 			if (scene == _scene) {
 				isnone = false;
@@ -66,49 +66,44 @@ void SceneManager::AddScene(Scene_Obejct* _scene) {
 			}
 		}
 		if (isnone) {
-			_scene->Init();								// 初始化
-			Scene_Index = _scene->scene_id;				// 加入映射
-			MapScene[_scene->scene_id] = _scene;		// 保存
+			_scene->Init();											// 初始化
+			g_sceneManger->Scene_Index = _scene->scene_id;			// 加入映射
+			g_sceneManger->MapScene[_scene->scene_id] = _scene;		// 保存
 		}
 	}
 }
 
 // 切换场景
 void SceneManager::SwitchScene(unsigned int scene_id) {
-	if (MapScene.count(scene_id) == 1) {
-		MapScene[Scene_Index]->Stop();		// 场景停止
-		MapScene[Scene_Index]->Release();	// 场景释放
-		delete MapScene[Scene_Index];		// 释放内存
-		MapScene[Scene_Index] = nullptr;	// 置空
-		Scene_Index = scene_id;
+	if (g_sceneManger->MapScene.count(scene_id) == 1) {
+		 g_sceneManger->MapScene[ g_sceneManger->Scene_Index]->Stop();		// 场景停止
+		 g_sceneManger->MapScene[ g_sceneManger->Scene_Index]->Release();	// 场景释放
+		delete  g_sceneManger->MapScene[g_sceneManger->Scene_Index];		// 释放内存
+		g_sceneManger->MapScene[g_sceneManger->Scene_Index] = nullptr;		// 置空
+		g_sceneManger->Scene_Index = scene_id;
 	}
 }
 
 // 删除场景
 void SceneManager::DeleteScene(unsigned int scene_id) {
-	if (MapScene.count(scene_id) == 1) {
+	if (g_sceneManger->MapScene.count(scene_id) == 1) {
 		// 删除当前场景
-		MapScene[Scene_Index]->Stop();		// 场景停止
-		MapScene[Scene_Index]->Release();	// 场景释放
-		delete MapScene[Scene_Index];		// 释放内存
-		MapScene[Scene_Index] = nullptr;	// 置空
+		g_sceneManger->MapScene[g_sceneManger->Scene_Index]->Stop();		// 场景停止
+		g_sceneManger->MapScene[g_sceneManger->Scene_Index]->Release();		// 场景释放
+		delete  g_sceneManger->MapScene[g_sceneManger->Scene_Index];		// 释放内存
+		g_sceneManger->MapScene[g_sceneManger->Scene_Index] = nullptr;		// 置空
 
 		// 删除是当前场景 - scene替换
-		if (scene_id == Scene_Index) {
-			for (auto& mapping : MapScene) {
+		if (scene_id == g_sceneManger->Scene_Index) {
+			for (auto& mapping : g_sceneManger->MapScene) {
 				auto& scene = mapping.second;
 				if (scene->scene_id != scene_id) {
-					Scene_Index = scene->scene_id;
+					g_sceneManger->Scene_Index = scene->scene_id;
 					break;
 				}
 			}
 		}
 	}
-}
-
-// 初始化
-void SceneManager::Init() {
-
 }
 
 // 更新

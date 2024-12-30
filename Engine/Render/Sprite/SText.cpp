@@ -65,7 +65,7 @@ void SText::Update() {
 
 // »æÖÆÍ¼Ïñ
 void SText::Draw() {
-	if (render_text) {
+	if (render_text && visiable) {
 		auto render = RenderFactory::GetInstance()->GetRender();
 		if (render) {
 			render->RenderText(render_text, draw_x, draw_y, draw_width, draw_height, text_layout, text_brash);

@@ -1,7 +1,7 @@
 #ifndef _SceneManager_h_
 #define _SceneManager_h_
 
-#include "Scene_Obejct.h"
+#include "Scene_Base.h"
 
 // 场景管理
 class SceneManager {
@@ -16,7 +16,7 @@ private:
 	static SceneManager* g_sceneManger;
 
 	// 属性
-	std::map<unsigned int, Scene_Obejct*> MapScene;	// 场景集合
+	std::map<unsigned int, Scene_Base*> MapScene;	// 场景集合
 	unsigned int Scene_Index;						// 场景索引
 
 public:
@@ -36,18 +36,15 @@ public:
 	static void DrawScene();
 
 	// 加入场景
-	void AddScene(Scene_Obejct* _scene);
+	static void AddScene(Scene_Base* _scene);
 
 	// 切换场景
-	void SwitchScene(unsigned int scene_id);
+	static void SwitchScene(unsigned int scene_id);
 
 	// 删除场景
-	void DeleteScene(unsigned int scene_id);
+	static void DeleteScene(unsigned int scene_id);
 
 private:
-	// 初始化
-	void Init();
-
 	// 更新
 	void Update();
 

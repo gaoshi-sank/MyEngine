@@ -1,8 +1,9 @@
 #ifndef _SSprite_h_
 #define _SSprite_h_
 
-#include "SImage.h"	// 图像
-#include "SText.h"	// 文本
+#include "SImage.h"			// 图像
+#include "SText.h"			// 文本
+#include "Animation.h"		// 动画
 
 
 #endif // !_SSprite_h_

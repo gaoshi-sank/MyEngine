@@ -45,7 +45,7 @@ void SImage::Update() {
 
 // »æÖÆÍ¼Ïñ
 void SImage::Draw() {
-	if (_image) {
+	if (_image && visiable) {
 		auto render = RenderFactory::GetInstance()->GetRender();
 		if (render) {
 			render->RenderImage(_image, draw_x, draw_y, draw_width, draw_height, src_x, src_y, src_width, src_height, opacity, angle);

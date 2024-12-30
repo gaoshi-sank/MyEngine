@@ -67,13 +67,16 @@ void EngineProvider::BuildEngineStruct() {
 	WindowFactory::SethInstance(engine_hInstance);
 	this->mainWindow = WindowFactory::Build(250, 80, 640, 480);
 
+	// 构建控制系统
+	InputFactory::InitInput(InputFactory::InputType_DirectInput8, engine_hInstance, mainWindow->GetHandle());
+
 	// 构建渲染系统
 	RenderFactory::InitRender(RenderFactory::RenderType_Direct2D, mainWindow->GetHandle(), 640, 480);
 
 	// 构建UI系统
 	UIFactory::InitUIProvider();
 
-	// 构建Scenery系统
+	// 构建场景系统
 	SceneManager::InitSceneManager();
 
 	// 构建独立线程

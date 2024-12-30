@@ -33,8 +33,7 @@ private:
 
 public:
 	// 初始化渲染器
-	// 可变长参数
-	// 渲染器类型，对应渲染器所需参数
+	// RenderType_Direct2D: 窗口句柄，窗口宽度，窗口高度
 	static void InitRender(int renderType, ...);
 
 	// 获取渲染器工厂

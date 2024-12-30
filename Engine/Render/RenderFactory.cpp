@@ -22,6 +22,7 @@ RenderFactory::~RenderFactory() {
 }
 
 // 初始化渲染器
+// RenderType_Direct2D: 窗口句柄，窗口宽度，窗口高度
 void RenderFactory::InitRender(int renderType, ...) {
 	auto factory_render = RenderFactory::GetInstance();
 	if (factory_render) {
@@ -59,7 +60,6 @@ void RenderFactory::InitRender(int renderType, ...) {
 		// 结束参数设置
 		va_end(ap);
 	}
-
 }
 
 // 获取渲染器工厂
