@@ -29,11 +29,21 @@ void Scene_Test::Release() {
 
 // ¸üÐÂ
 void Scene_Test::Update() {
-	if (!isinit) {
-		isinit = true;
-		Init();
+
+	auto control = InputFactory::GetInstance()->GetInput();
+	if (control && control->GetKeyState(VK_ESCAPE)) {
+		isclick = 1;
 	}
-	
+	else {
+		if (isclick == 1) {
+			isclick = 2;
+		}
+		if (isclick == 2) {
+			_test->visiable = _test->visiable ? false : true;
+		}
+		isclick = 0;
+	}
+
 	if (_test) {
 		_test->Update();
 	}

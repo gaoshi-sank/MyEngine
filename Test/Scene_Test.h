@@ -5,10 +5,12 @@
 #include "../Engine/EngineProvider.h"
 
 // ≤‚ ‘≥°æ∞
-class Scene_Test : public Scene_Obejct {
+class Scene_Test : public Scene_Base {
 private:
 	SImage* _test;
 	bool isinit = false;
+
+	int isclick = 0;
 
 public:
 	// ππ‘Ï

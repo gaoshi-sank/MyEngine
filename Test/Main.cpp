@@ -11,7 +11,7 @@ int APIENTRY wWinMain(
 {
     EngineProvider::InitEngine(hInstance);
 
-    new Scene_Test();
+    SceneManager::AddScene(new Scene_Test());
 
     EngineProvider::RunEngine();
     return 0;
