@@ -115,6 +115,7 @@ bool Input_DirectInput8::GetKeyState(int _key) {
 }
 
 // 获取鼠标状态
+// 0 - 鼠标左键，1 - 鼠标右键
 bool Input_DirectInput8::GetMouseState(int key) {
     HRESULT hr;
     DIMOUSESTATE mouseboardState = { 0 };

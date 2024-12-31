@@ -33,6 +33,7 @@ public:
 	virtual bool GetKeyState(int key);
 
 	// 获取鼠标状态
+	// 0 - 鼠标左键，1 - 鼠标右键
 	virtual bool GetMouseState(int key);
 };
 
