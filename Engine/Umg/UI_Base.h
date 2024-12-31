@@ -14,6 +14,7 @@ public:
 	bool window_visible;		// 可见性
 	bool window_release;		// 释放性
 	bool window_top;			// 最顶层
+	bool window_attached;		// 附属性
 	bool window_key;			// 可触发键盘事件 
 	bool window_mouse;			// 可触发鼠标事件
 	int window_renderlevel;		// 窗口渲染层
@@ -34,7 +35,8 @@ public:
 		UIStyle_Lable,
 		UIStyle_Button,
 		UIStyle_Contain,
-		UIStyle_CheckBox
+		UIStyle_CheckBox,
+		UIStyle_Plane,
 	};
 
 public:

@@ -24,10 +24,15 @@ void UIFactory::InitUIProvider() {
 void UIFactory::Release() {
 	if (g_ui) {
 		for (auto i = 0; i < g_ui->list.size(); i++) {
-			auto& node = g_ui->list[i];
-			if (node) {
-				delete node;
-				node = nullptr;
+			auto& _ui = g_ui->list[i];
+			// 基础判断条件
+			if (_ui && _ui->window_id != 0x00 && !_ui->window_release) {
+				// 附加判断条件
+				// 不是附属单位
+				if (!_ui->window_attached) {
+					delete _ui;
+					_ui = nullptr;
+				}
 			}
 		}
 		g_ui->list.clear();
@@ -46,7 +51,10 @@ void UIFactory::AddWindow(UI_Base* _ui) {
 			}
 		}
 		if (isdiff) {
-			g_ui->addList.push_back(_ui);
+			// 不是附属单位
+			if (_ui && !_ui->window_attached) {
+				g_ui->addList.push_back(_ui);
+			}
 		}
 	}
 }
@@ -73,8 +81,13 @@ void UIFactory::DelWindow(UI_Base* _ui) {
 void UIFactory::CheckEvent(unsigned int* param) {
 	if (g_ui && param) {
 		for (auto& _ui : g_ui->list) {
+			// 基础判断条件
 			if (_ui && _ui->window_id != 0x00 && !_ui->window_release) {
-				_ui->CheckEvent(param);
+				// 附加判断条件
+				// 不是附属单位
+				if (!_ui->window_attached) {
+					_ui->CheckEvent(param);
+				}
 			}
 		}
 	}
@@ -159,8 +172,12 @@ void UIFactory::Update() {
 
 		// 更新
 		for (auto& _ui : g_ui->list) {
+			// 基础判断条件
 			if (_ui && _ui->window_id != 0x00 && !_ui->window_release) {
-				_ui->Update();
+				// 不是附属单位
+				if (!_ui->window_attached) {
+					_ui->Update();
+				}
 			}
 		}
 	}
