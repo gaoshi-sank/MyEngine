@@ -14,12 +14,26 @@ Scene_Test::~Scene_Test() {
 
 // 初始化
 void Scene_Test::Init() {
-	std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Title\\1-1.bmp";
-	_test = new SImage(testpath.c_str());
+	std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
+	
+	_test = new UI_Plane();
 	if (_test) {
-		_test->SetLocaiton(0, 0);
-		//_test->SetSize(400, 300);
+		_test->SetLocation(0, 0);
+		_test->SetSize(200, 50);
+
+		UI_Button* att1 = new UI_Button();
+		if (att1) {
+			att1->Create(testpath.c_str(), 0, 0, 100, 50);
+			_test->AddAttachedUI(att1);
+		}
+		
+		UI_Button* att2 = new UI_Button();
+		if (att2) {
+			att2->Create(testpath.c_str(), 100, 0, 100, 50);
+			_test->AddAttachedUI(att2);
+		}
 	}
+	
 }
 
 // 释放
@@ -30,32 +44,14 @@ void Scene_Test::Release() {
 // 更新
 void Scene_Test::Update() {
 
-	auto control = InputFactory::GetInstance()->GetInput();
-	if (control && control->GetKeyState(VK_ESCAPE)) {
-		isclick = 1;
-	}
-	else {
-		if (isclick == 1) {
-			isclick = 2;
-		}
-		if (isclick == 2) {
-			_test->visiable = _test->visiable ? false : true;
-		}
-		isclick = 0;
-	}
 
-	if (_test) {
-		_test->Update();
-	}
 
 }
 
 // 渲染
 void Scene_Test::Draw() {
 
-	if (_test) {
-		_test->Draw();
-	}
+
 
 }
 
