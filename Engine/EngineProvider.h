@@ -9,6 +9,7 @@
 #include "Umg/UIFactory.h"
 #include "Scene/SceneManager.h"
 #include "Render/Sprite/SSprite.h"
+#include "FIleControl/FileControl.h"
 
 // 引擎管理类
 class EngineProvider {

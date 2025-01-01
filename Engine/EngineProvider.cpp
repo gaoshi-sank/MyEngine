@@ -79,6 +79,10 @@ void EngineProvider::BuildEngineStruct() {
 	// 构建场景系统
 	SceneManager::InitSceneManager();
 
+	// 构建文件处理系统
+	FileControl::InitFileControl();
+
+
 	// 构建独立线程
 	updateState = 1;
 	renderState = 1;
