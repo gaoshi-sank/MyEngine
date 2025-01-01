@@ -16,7 +16,7 @@ private:
 	int button_state;			// 按钮状态
 	int button_index;			// 按钮更新索引
 
-private:
+public:
 	// 枚举值
 	enum ButtonStyle {
 		ButtonStyle_Once = 1,	// 一个图完成4个按钮状态

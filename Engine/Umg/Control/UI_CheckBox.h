@@ -16,13 +16,13 @@ private:
 	int button_state;					// 按钮状态
 	int button_index;					// 按钮更新索引
 
-private:
+public:
 	// 枚举值
 	enum CheckBoxStyle {
-		CheckBoxStyle_OneOnce = 1,		// 单选按钮 单图
-		CheckBoxStyle_OneFour,			// 单选按钮 多图
-		CheckBoxStyle_ChangeOp_Once,	// 切换动画 单图
-		CheckBoxStyle_ChangeOp_Two,		// 切换动画 多图
+		CheckBoxStyle_OneOnce = 1,		// 按钮 - 单资源
+		CheckBoxStyle_OneFour,			// 按钮 - 包含四个资源
+		CheckBoxStyle_ChangeOp_Once,	// 三角符号 - 单资源 
+		CheckBoxStyle_ChangeOp_Two,		// 三角符号 - 包含两个资源
 		CheckBoxStyle_Switch,			// 框框
 	};
 
