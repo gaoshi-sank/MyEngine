@@ -15,7 +15,8 @@ Scene_Test::~Scene_Test() {
 // ≥ı ºªØ
 void Scene_Test::Init() {
 	std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
-	
+	std::string planepath = FileControl::ResPath("1.txt");
+	_test = PlaneFactory::BuildOnePlane(planepath.c_str());
 }
 
 //  Õ∑≈
