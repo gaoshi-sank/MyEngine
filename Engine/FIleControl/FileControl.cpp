@@ -72,12 +72,19 @@ void FileControl::InitFileControl() {
 	// 初始化路径 
 	memset(static_filename, '\0', sizeof(MAX_PATH));
 
-	// 获取当前路径 
+	// 获取当前exe路径 
 	GetModuleFileNameA(NULL, static_filename, MAX_PATH);
 
-	// 补全路径
-	std::string newpath = strcat(static_filename, "Res\\");
-	strcpy(static_filename, newpath.c_str());
+	// 获取路径
+	std::string oldpath = static_filename;
+	auto index = oldpath.find_last_of("\\");
+	if (index != std::string::npos) {
+		std::string newpath = oldpath.substr(0, index);
+		
+		// 补全路径
+		newpath +=  "\\Res\\";
+		strcpy(static_filename, newpath.c_str());
+	}
 }
 
 // 转化路径
