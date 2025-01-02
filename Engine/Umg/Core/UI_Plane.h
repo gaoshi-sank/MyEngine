@@ -48,6 +48,9 @@ public:
 	// 设置可见性
 	virtual void SetVisiable(bool visible = false);
 
+	// 触发事件处理
+	virtual void Event_Control(int uiType, int* param);
+
 };
 
 

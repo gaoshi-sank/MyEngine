@@ -15,7 +15,7 @@ public:
 	int height;				// 绘制高度
 	int res;				// 资源标志位
 	std::string resPath;	// 资源路径
-	int optionPlane;		// 供给Plane或者单独存在
+	int option;				// 生成Plane还是单独存在
 
 	// 特殊属性
 	std::string lable_title;	// lable标签用

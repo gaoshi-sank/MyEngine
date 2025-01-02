@@ -12,7 +12,7 @@ PlaneSetting::PlaneSetting() {
 	height = 0;			// 绘制高度
 	res = 0;			// 资源标志位
 	resPath = "";		// 资源路径
-	optionPlane = 0;	// 供给Plane或者单独存在
+	option = 0;			// 生成Plane还是单独存在
 
 	// 特殊属性
 	lable_title = "";
@@ -41,7 +41,7 @@ UI_Plane* PlaneFactory::BuildOnePlane(const char* filename) {
 			_plane = new UI_Plane();
 			if (!_plane) {
 				fclose(fp);
-				return;
+				return nullptr;
 			}
 
 			while (1) {
@@ -54,56 +54,66 @@ UI_Plane* PlaneFactory::BuildOnePlane(const char* filename) {
 						break;
 					}
 
+					// 分歧
 					for (auto& key_value : result) {
 						if (!key_value.Empty()) {
 							auto& key = key_value.key;
 							auto& value = key_value.value;
-							if (key.compare("uiType") == 1) {
-								_data->uiType = std::atoi(value.c_str());
+
+							if (key.compare("uiType") == 0) {
+								if (value.compare("Lable") == 0) {
+									_data->uiType = UI_Base::UIStyle_Lable;
+								}
+								else if (value.compare("Button") == 0) {
+									_data->uiType = UI_Base::UIStyle_Button;
+								}
+								else if (value.compare("CheckBox") == 0) {
+									_data->uiType = UI_Base::UIStyle_CheckBox;
+								}
 							}
-							else if (key.compare("x") == 1) {
+							else if (key.compare("x") == 0) {
 								_data->x = std::atoi(value.c_str());
 							}
-							else if (key.compare("y") == 1) {
+							else if (key.compare("y") == 0) {
 								_data->y = std::atoi(value.c_str());
 							}
-							else if (key.compare("width") == 1) {
+							else if (key.compare("width") == 0) {
 								_data->width = std::atoi(value.c_str());
 							}
-							else if (key.compare("height") == 1) {
+							else if (key.compare("height") == 0) {
 								_data->height = std::atoi(value.c_str());
 							}
-							else if (key.compare("res") == 1) {
+							else if (key.compare("res") == 0) {
 								_data->res = std::atoi(value.c_str());
 							}
-							else if (key.compare("resPath") == 1) {
+							else if (key.compare("resPath") == 0) {
 								_data->resPath = FileControl::ResPath(value);
 							}
-							else if (key.compare("optionPlane") == 1) {
-								_data->optionPlane = std::atoi(value.c_str());
+							else if (key.compare("option") == 0) {
+								_data->option = std::atoi(value.c_str());
 							}
-							else if (key.compare("lable_title") == 1) {
+							else if (key.compare("lable_title") == 0) {
 								_data->lable_title = value;
 							}
-							else if (key.compare("lable_title") == 1) {
+							else if (key.compare("button_title") == 0) {
 								_data->button_title = value;
 							}
-							else if (key.compare("optionPlane") == 1) {
+							else if (key.compare("ButtonType") == 0) {
 								_data->resPath_buttonType = std::atoi(value.c_str());
 							}
-							else if (key.compare("resPath_out") == 1) {
+							else if (key.compare("resPath_out") == 0) {
 								_data->button_title = FileControl::ResPath(value);
 							}
-							else if (key.compare("resPath_in") == 1) {
+							else if (key.compare("resPath_in") == 0) {
 								_data->button_title = FileControl::ResPath(value);
 							}
-							else if (key.compare("resPath_down") == 1) {
+							else if (key.compare("resPath_down") == 0) {
 								_data->button_title = FileControl::ResPath(value);
 							}
-							else if (key.compare("resPath_disable") == 1) {
+							else if (key.compare("resPath_disable") == 0) {
 								_data->button_title = FileControl::ResPath(value);
 							}
-							else if (key.compare("resPath_checkBoxType") == 1) {
+							else if (key.compare("resPath_checkBoxType") == 0) {
 								_data->resPath_checkBoxType = (std::atoi(value.c_str()) == 4) ? 4 : 2;
 							}
 						}
@@ -155,6 +165,15 @@ UI_Plane* PlaneFactory::BuildOnePlane(const char* filename) {
 								alise_button->SetSize(_data->width, _data->height);
 							}
 							alise_button->AddStaticText(_data->lable_title);
+
+							// 触发事件
+							alise_button->Event_Hover([&](int* param) { 
+								_plane->Event_Control(UI_Base::UIStyle_Button, param); 
+							});
+							alise_button->Event_Click([&](int* param) { _plane->Event_Control(UI_Base::UIStyle_Button, param);  });
+							alise_button->Event_Down([&](int* param) { _plane->Event_Control(UI_Base::UIStyle_Button, param);  });
+							alise_button->Event_Up([&](int* param) { _plane->Event_Control(UI_Base::UIStyle_Button, param);  });
+
 							break;
 						}
 						case UI_Base::UIStyle_CheckBox:

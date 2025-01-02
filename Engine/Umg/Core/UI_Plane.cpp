@@ -123,3 +123,10 @@ void UI_Plane::SetVisiable(bool visible) {
 
 	this->window_visible = visible;
 }
+
+// 触发事件处理
+void UI_Plane::Event_Control(int uiType, int* param) {
+	if (uiType == UI_Base::UIStyle_Button) {
+		auto i = 0;
+	}
+}
