@@ -25,6 +25,7 @@ void Scene_Test::Init() {
 // 释放
 void Scene_Test::Release() {
 
+
 }
 
 // 更新
@@ -43,12 +44,14 @@ void Scene_Test::Draw() {
 
 // 停止
 void Scene_Test::Stop() {
-
+	//Scene_Base::Stop();
 }
 
 // 面板UI事件处理
 void Scene_Test::EventControl(int uiType, int ui_id, int msgType, int message) {
 	if (uiType == UI_Base::UIStyle_Button) {
-
+		if (msgType == UI_Base::UIMsgType_Click) {
+			SceneManager::DeleteScene(this->scene_id);
+		}
 	}
 }

@@ -9,7 +9,6 @@ class Scene_Test : public Scene_Base {
 private:
 	UI_Plane* _test;
 	bool isinit = false;
-
 	int isclick = 0;
 
 public:
