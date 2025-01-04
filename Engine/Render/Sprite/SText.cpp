@@ -41,21 +41,16 @@ SText::~SText() {
 	}
 
 	// 文字格式-布局-画刷
-	if (text_format) {
-		delete text_format;
-		text_format = nullptr;
+	auto render = RenderFactory::GetInstance()->GetRender();
+	if (render) {
+		render->ReleaseObject(text_format);
+		render->ReleaseObject(text_layout);
+		render->ReleaseObject(text_brash);
 	}
 
-	if (text_layout) {
-		delete text_layout;
-		text_layout = nullptr;
-	}
-
-	if (text_brash) {
-		delete text_brash;
-		text_brash = nullptr;
-	}
-
+	text_format = nullptr;
+	text_layout = nullptr;
+	text_brash = nullptr;
 }
 
 // 更新

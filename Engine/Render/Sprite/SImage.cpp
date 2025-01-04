@@ -32,10 +32,11 @@ SImage::SImage(const char* filename) : SImage(){
 
 // Îö¹¹
 SImage::~SImage() {
-	if (_image) {
-		delete _image;
-		_image = nullptr;
+	auto render = RenderFactory::GetInstance()->GetRender();
+	if (_image && render) {
+		render->ReleaseObject(_image);
 	}
+	_image = nullptr;
 }
 
 // ¸üĞÂ
