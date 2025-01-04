@@ -28,7 +28,7 @@ void SceneManager::InitSceneManager() {
 // 释放
 void SceneManager::ReleaseScene() {
 	if (g_sceneManger) {
-		g_sceneManger->Update();
+		g_sceneManger->Release();
 	}
 }
 
@@ -87,13 +87,12 @@ void SceneManager::SwitchScene(unsigned int scene_id) {
 // 删除场景
 void SceneManager::DeleteScene(unsigned int scene_id) {
 	if (g_sceneManger->MapScene.count(scene_id) == 1) {
-		// 删除当前场景
-		g_sceneManger->MapScene[g_sceneManger->Scene_Index]->Stop();		// 场景停止
-		g_sceneManger->MapScene[g_sceneManger->Scene_Index]->Release();		// 场景释放
-		delete  g_sceneManger->MapScene[g_sceneManger->Scene_Index];		// 释放内存
-		g_sceneManger->MapScene[g_sceneManger->Scene_Index] = nullptr;		// 置空
+		// 加入删除列表
+		g_sceneManger->MapScene[scene_id]->Stop();
+		g_sceneManger->DeleteScenes.push_back(scene_id);
+		
 
-		// 删除是当前场景 - scene替换
+		// 删除是当前场景 == 切换Scene
 		if (scene_id == g_sceneManger->Scene_Index) {
 			for (auto& mapping : g_sceneManger->MapScene) {
 				auto& scene = mapping.second;
@@ -108,6 +107,31 @@ void SceneManager::DeleteScene(unsigned int scene_id) {
 
 // 更新
 void SceneManager::Update() {
+
+	// 根据删除列表删除场景
+	if (!DeleteScenes.empty()) {
+		std::vector<unsigned int>::iterator it;
+		for (it = DeleteScenes.begin(); it != DeleteScenes.end();) {
+			auto iskeep = true;
+			auto id = (*it);
+			if (MapScene.count(id) == 1 && MapScene[id]->isPrerelease) {
+				MapScene[id]->Stop();		// 场景停止
+				MapScene[id]->Release();	// 场景释放
+				delete  MapScene[id];		// 释放内存
+				MapScene[id] = nullptr;		// 置空
+				MapScene.erase(id);			// 从映射中删除
+				
+				// 循环条件
+				iskeep = false;
+				it = DeleteScenes.erase(it);
+			}
+			if (iskeep) {
+				it++;
+			}
+		}
+	}
+
+	// 更新 
 	if (Scene_Index != 0 && MapScene.count(Scene_Index) == 1) {
 		auto& scene = MapScene[Scene_Index];
 		scene->Update();

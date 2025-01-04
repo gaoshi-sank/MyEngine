@@ -18,6 +18,7 @@ private:
 	// 属性
 	std::map<unsigned int, Scene_Base*> MapScene;	// 场景集合
 	unsigned int Scene_Index;						// 场景索引
+	std::vector<unsigned int> DeleteScenes;			// 删除场景
 
 public:
 	// 初始化引擎

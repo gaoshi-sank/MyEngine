@@ -8,6 +8,7 @@
 class Scene_Base {
 public:
 	unsigned int scene_id;
+	bool isPrerelease;
 
 public:
 	// ππ‘Ï
