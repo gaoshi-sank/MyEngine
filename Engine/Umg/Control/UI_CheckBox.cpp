@@ -159,7 +159,7 @@ void UI_CheckBox::CheckEvent(unsigned int* param) {
 
 					// 按下事件
 					if (callback_down) {
-						callback_down(nullptr);
+						callback_down(window_id);
 					}
 				}
 			}
@@ -168,7 +168,7 @@ void UI_CheckBox::CheckEvent(unsigned int* param) {
 				if (window_inrect) {
 					// 触发悬停事件
 					if (callback_hover) {
-						callback_hover(nullptr);
+						callback_hover(window_id);
 					}
 				}
 			}
@@ -340,24 +340,24 @@ bool UI_CheckBox::GetCheckState() {
 }
 
 // 设置回调
-void UI_CheckBox::Event_Hover(std::function<void(int* _param)> _hover) {
+void UI_CheckBox::Event_Hover(std::function<void(int Id)> _hover) {
 	// this->callback_hover = _hover;
 	// 复选框 - 不触发当前事件
 }
 
 // 设置回调 - 按下
-void UI_CheckBox::Event_Down(std::function<void(int* _param)> _down) {
+void UI_CheckBox::Event_Down(std::function<void(int Id)> _down) {
 	this->callback_down = _down;
 }
 
 // 设置回调 - 放开
-void UI_CheckBox::Event_Up(std::function<void(int* _param)> _up) {
+void UI_CheckBox::Event_Up(std::function<void(int Id)> _up) {
 	// this->callback_up = _up;
 	// 复选框 - 不触发当前事件
 }
 
 // 设置回调 - 点击
-void UI_CheckBox::Event_Click(std::function<void(int* _param)> _click) {
+void UI_CheckBox::Event_Click(std::function<void(int Id)> _click) {
 	// this->callback_click = _click;
 	// 复选框 - 不触发当前事件
 }

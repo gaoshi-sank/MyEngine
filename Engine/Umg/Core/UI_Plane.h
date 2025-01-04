@@ -14,6 +14,9 @@ private:
 	std::vector<UI_Base*> ListAttached;	// 附属UI列表
 	std::mutex lockList;
 
+	// 面板类回调
+	std::function<void(int uiType, int ui_id, int msgType, int message)> callback_handle;	
+
 public:
 	// 构造
 	UI_Plane();
@@ -48,8 +51,12 @@ public:
 	// 设置可见性
 	virtual void SetVisiable(bool visible = false);
 
+	// 设置回调
+	virtual void SetCallback(std::function<void(int uiType, int ui_id, int msgType, int message)> _callback);
+
 	// 触发事件处理
-	virtual void Event_Control(int uiType, int* param);
+	// UI类型、UI编号、消息类型、消息值
+	virtual void Event_Control(int uiType, int ui_id, int msgType, int message);
 
 };
 

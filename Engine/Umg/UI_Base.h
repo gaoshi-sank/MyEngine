@@ -30,6 +30,7 @@ public:
 
 public:
 	// 枚举值
+	// UI类型
 	enum UIStyle {
 		UIStyle_Base = 0,
 		UIStyle_Lable,
@@ -37,6 +38,15 @@ public:
 		UIStyle_Contain,
 		UIStyle_CheckBox,
 		UIStyle_Plane,
+	};
+
+	// UI消息
+	enum UIMsgType {
+		UIMsgType_None = 0,
+		UIMsgType_Hover,		// 悬停
+		UIMsgType_Down,			// 按下
+		UIMsgType_Up,			// 放开
+		UIMsgType_Click,		// 点击
 	};
 
 public:

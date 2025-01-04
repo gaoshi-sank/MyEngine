@@ -153,7 +153,7 @@ void UI_Button::CheckEvent(unsigned int* param) {
 
 						// 按下事件
 						if (callback_down) {
-							callback_down(nullptr);
+							callback_down(window_id);
 						}
 					}
 				}
@@ -170,13 +170,13 @@ void UI_Button::CheckEvent(unsigned int* param) {
 					if (click_state == 1) {
 						// 出发点击事件
 						if (callback_click) {
-							callback_click(nullptr);
+							callback_click(window_id);
 						}
 					}
 
 					// 出发放开事件
 					if (callback_up) {
-						callback_up(nullptr);
+						callback_up(window_id);
 					}
 				}
 
@@ -188,7 +188,7 @@ void UI_Button::CheckEvent(unsigned int* param) {
 				if (window_inrect) {
 					// 触发悬停事件
 					if (callback_hover) {
-						callback_hover(nullptr);
+						callback_hover(window_id);
 					}
 				}
 			}
@@ -336,21 +336,21 @@ void UI_Button::SetVisiable(bool visible) {
 
 
 // 设置回调
-void UI_Button::Event_Hover(std::function<void(int* _param)> _hover) {
+void UI_Button::Event_Hover(std::function<void(int Id)> _hover) {
 	this->callback_hover = _hover;
 }
 
 // 设置回调 - 按下
-void UI_Button::Event_Down(std::function<void(int* _param)> _down) {
+void UI_Button::Event_Down(std::function<void(int Id)> _down) {
 	this->callback_down = _down;
 }
 
 // 设置回调 - 放开
-void UI_Button::Event_Up(std::function<void(int* _param)> _up) {
+void UI_Button::Event_Up(std::function<void(int Id)> _up) {
 	this->callback_up = _up;
 }
 
 // 设置回调 - 点击
-void UI_Button::Event_Click(std::function<void(int* _param)> _click) {
+void UI_Button::Event_Click(std::function<void(int Id)> _click) {
 	this->callback_click = _click;
 }

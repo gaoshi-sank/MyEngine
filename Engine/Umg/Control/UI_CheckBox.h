@@ -82,16 +82,16 @@ public:
 	virtual bool GetCheckState();
 
 	// 设置回调 - 悬停
-	virtual void Event_Hover(std::function<void(int* _param)> _hover);
+	virtual void Event_Hover(std::function<void(int Id)> _hover);
 
 	// 设置回调 - 按下
-	virtual void Event_Down(std::function<void(int* _param)> _down);
+	virtual void Event_Down(std::function<void(int Id)> _down);
 
 	// 设置回调 - 放开
-	virtual void Event_Up(std::function<void(int* _param)> _up);
+	virtual void Event_Up(std::function<void(int Id)> _up);
 
 	// 设置回调 - 点击
-	virtual void Event_Click(std::function<void(int* _param)> _hover);
+	virtual void Event_Click(std::function<void(int Id)> _hover);
 };
 
 
