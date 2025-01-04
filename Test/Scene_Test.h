@@ -34,6 +34,9 @@ public:
 	// 停止
 	virtual void Stop() override;
 
+	// 面板UI事件处理
+	virtual void EventControl(int uiType, int ui_id, int msgType, int message);
+
 };
 
 #endif // !_Scene_Test_h_
