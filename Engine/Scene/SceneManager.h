@@ -40,7 +40,7 @@ public:
 	static void AddScene(Scene_Base* _scene);
 
 	// ÇÐ»»³¡¾°
-	static void SwitchScene(unsigned int scene_id);
+	static void SwitchScene(unsigned int scene_id, bool release_now = true);
 
 	// É¾³ý³¡¾°
 	static void DeleteScene(unsigned int scene_id);
