@@ -115,7 +115,6 @@ void SceneManager::Update() {
 			auto iskeep = true;
 			auto id = (*it);
 			if (MapScene.count(id) == 1 && MapScene[id]->isPrerelease) {
-				MapScene[id]->Stop();		// 场景停止
 				MapScene[id]->Release();	// 场景释放
 				delete  MapScene[id];		// 释放内存
 				MapScene[id] = nullptr;		// 置空

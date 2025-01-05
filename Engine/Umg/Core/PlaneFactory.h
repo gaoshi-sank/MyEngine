@@ -45,7 +45,7 @@ public:
 	static UI_Plane* BuildOnePlane(const char* filename);
 
 	// 根据文件生成一系列UI
-	static void BuildUIByFile(const char* filename, std::function<void(int, int, int, int )> _callback);
+	static std::vector<UI_Base*> BuildUIByFile(const char* filename, std::function<void(int, int, int, int )> _callback);
 };
 
 

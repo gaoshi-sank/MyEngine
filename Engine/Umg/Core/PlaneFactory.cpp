@@ -228,7 +228,8 @@ UI_Plane* PlaneFactory::BuildOnePlane(const char* filename) {
 }
 
 // 根据文件生成一系列UI
-void PlaneFactory::BuildUIByFile(const char* filename, std::function<void(int, int, int, int)> _callback) {
+std::vector<UI_Base*> PlaneFactory::BuildUIByFile(const char* filename, std::function<void(int, int, int, int)> _callback) {
+	std::vector<UI_Base*> ListResult;
 	if (filename) {
 		FILE* fp = fopen(filename, "r");
 		if (fp) {
@@ -403,6 +404,9 @@ void PlaneFactory::BuildUIByFile(const char* filename, std::function<void(int, i
 						}
 						break;
 						}
+
+						// 加入列表
+						ListResult.push_back(_newui);
 					}
 
 					// 清空结构体
@@ -415,4 +419,6 @@ void PlaneFactory::BuildUIByFile(const char* filename, std::function<void(int, i
 			fclose(fp);
 		}
 	}
+
+	return ListResult;
 }
