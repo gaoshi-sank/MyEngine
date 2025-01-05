@@ -3,12 +3,18 @@
 // 构造
 Scene_Test::Scene_Test() {
 	_test = nullptr;
-
-
 }
 
 // 析构
 Scene_Test::~Scene_Test() {
+
+	for (auto& _ui : listTest) {
+		if (_ui) {
+			_ui->PreRelease();
+			_ui = nullptr;
+		}
+	}
+	listTest.clear();
 
 }
 
@@ -17,7 +23,7 @@ void Scene_Test::Init() {
 	std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
 	std::string planepath = FileControl::ResPath("1.txt");
 	
-	PlaneFactory::BuildUIByFile(planepath.c_str(), [&](int uiType, int ui_id, int msgType, int message) {
+	listTest = PlaneFactory::BuildUIByFile(planepath.c_str(), [&](int uiType, int ui_id, int msgType, int message) {
 		EventControl(uiType, ui_id, msgType, message);
 	});
 }
@@ -25,6 +31,7 @@ void Scene_Test::Init() {
 // 释放
 void Scene_Test::Release() {
 
+	
 
 }
 
@@ -44,8 +51,9 @@ void Scene_Test::Draw() {
 
 // 停止
 void Scene_Test::Stop() {
-	//Scene_Base::Stop();
+	Scene_Base::Stop();
 }
+
 
 // 面板UI事件处理
 void Scene_Test::EventControl(int uiType, int ui_id, int msgType, int message) {

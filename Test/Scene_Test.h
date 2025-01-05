@@ -11,6 +11,8 @@ private:
 	bool isinit = false;
 	int isclick = 0;
 
+	std::vector<UI_Base*> listTest;
+
 public:
 	// ππ‘Ï
 	Scene_Test();
