@@ -69,7 +69,7 @@ void SText::Draw() {
 }
 
 // ÉèÖÃ»æÖÆÎ»ÖÃ
-void SText::SetLocaiton(int x, int y) {
+void SText::SetLocation(int x, int y) {
 	this->draw_x = x;
 	this->draw_y = y;
 }

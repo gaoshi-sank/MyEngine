@@ -55,7 +55,7 @@ void SImage::Draw() {
 }
 
 // ÉèÖÃ»æÖÆÎ»ÖÃ
-void SImage::SetLocaiton(int x, int y) {
+void SImage::SetLocation(int x, int y) {
 	this->draw_x = x;
 	this->draw_y = y;
 }

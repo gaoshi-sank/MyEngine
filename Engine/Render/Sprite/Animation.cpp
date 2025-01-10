@@ -31,7 +31,7 @@ void Animation::AddSprite(const char* filename, int x, int y, int width, int hei
 	if(filename) {
 		SImage* _image = new SImage(filename);
 		if (_image) {
-			_image->SetLocaiton(x, y);
+			_image->SetLocation(x, y);
 			_image->SetSize(width, height);
 			_image->SetCrop(cropx, cropy, cropwidth, cropheight);
 		}
@@ -68,6 +68,37 @@ void Animation::Draw() {
 	if (showIndex >= 0 && showIndex < ListSprite.size()) {
 		ListSprite[showIndex]->Draw();
 	}
+}
+
+// 设置绘制位置
+void Animation::SetLocation(int x, int y) {
+	this->draw_x = x;
+	this->draw_y = y;
+
+	// 全部图片
+	for (auto& _sprite : ListSprite) {
+		if (_sprite) {
+			_sprite->SetLocation(x, y);
+		}
+	}
+}
+
+// 设置绘制大小
+void Animation::SetSize(int w, int h) {
+	this->draw_width = w;
+	this->draw_height = h;
+
+	// 全部图片
+	for (auto& _sprite : ListSprite) {
+		if (_sprite) {
+			_sprite->SetSize(w, h);
+		}
+	}
+}
+
+// 设置旋转
+void Animation::SetRotate(float angle) {
+	
 }
 
 // 计时器回调

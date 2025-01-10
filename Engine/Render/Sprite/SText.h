@@ -37,7 +37,7 @@ public:
 	virtual void Draw();
 
 	// 设置绘制位置
-	virtual void SetLocaiton(int x, int y);
+	virtual void SetLocation(int x, int y);
 
 	// 设置绘制大小
 	virtual void SetSize(int w, int h);
