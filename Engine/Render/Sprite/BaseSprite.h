@@ -41,6 +41,15 @@ public:
 	// 设置旋转
 	virtual void SetRotate(float angle) = 0;
 
+	// 获取绘制位置
+	virtual void GetLocation(int& x, int& y) = 0;
+
+	// 获取绘制大小
+	virtual void GetSize(int& w, int& h) = 0;
+
+	// 获取旋转
+	virtual void GetRotate(float& angle) = 0;
+
 };
 
 #endif // !_BaseSprite_h_

@@ -88,3 +88,20 @@ bool SImage::GetImageSize(int& width, int& height) {
 	}
 	return false;
 }
+
+// 获取绘制位置
+void SImage::GetLocation(int& x, int& y) {
+	x = this->draw_x;
+	y = this->draw_y;
+}
+
+// 获取绘制大小
+void SImage::GetSize(int& w, int& h) {
+	w = this->draw_width;
+	h = this->draw_height;
+}
+
+// 获取旋转
+void SImage::GetRotate(float& angle) {
+	angle = this->angle;
+}

@@ -86,6 +86,24 @@ void SText::SetRotate(float angle) {
 
 }
 
+// 获取绘制位置
+void SText::GetLocation(int& x, int& y) {
+	x = this->draw_x;
+	y = this->draw_y;
+}
+
+// 获取绘制大小
+void SText::GetSize(int& w, int& h) {
+	w = this->draw_width;
+	h = this->draw_height;
+}
+
+// 获取旋转
+// 暂未实装
+void SText::GetRotate(float& angle) {
+
+}
+
 // 重设布局 
 void SText::ReSetLayout(int horizontal_Style, int vertical_Style, int swrapping) {
 	auto render = RenderFactory::GetInstance()->GetRender();

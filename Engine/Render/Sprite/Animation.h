@@ -41,7 +41,18 @@ public:
 	virtual void SetSize(int w, int h) override;
 
 	// 设置旋转
+	// 暂未实装
 	virtual void SetRotate(float angle) override;
+
+	// 获取绘制位置
+	virtual void GetLocation(int& x, int& y);
+
+	// 获取绘制大小
+	virtual void GetSize(int& w, int& h);
+
+	// 获取旋转
+	// 暂未实装
+	virtual void GetRotate(float& angle);
 
 private:
 	// 计时器回调
