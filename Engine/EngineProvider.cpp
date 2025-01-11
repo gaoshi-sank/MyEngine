@@ -59,6 +59,9 @@ void EngineProvider::BuildEngineStruct() {
 	// 读取引擎配置文件
 	ReadConfig();
 
+	// 构建文件处理系统
+	FileControl::InitFileControl();
+
 	// 开始构建
 	// 构建计时器系统
 	TimerFactory::InitTimerFactory();
@@ -78,9 +81,6 @@ void EngineProvider::BuildEngineStruct() {
 
 	// 构建场景系统
 	SceneManager::InitSceneManager();
-
-	// 构建文件处理系统
-	FileControl::InitFileControl();
 
 
 	// 构建独立线程
