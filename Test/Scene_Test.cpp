@@ -26,6 +26,8 @@ void Scene_Test::Init() {
 	listTest = PlaneFactory::BuildUIByFile(planepath.c_str(), [&](int uiType, int ui_id, int msgType, int message) {
 		EventControl(uiType, ui_id, msgType, message);
 	});
+
+	LogI("", "request:[%d]", 1);
 }
 
 //  Õ∑≈
