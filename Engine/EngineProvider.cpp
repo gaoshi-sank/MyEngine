@@ -63,7 +63,7 @@ void EngineProvider::BuildEngineStruct() {
 	FileControl::InitFileControl();
 
 	// log系统
-
+	LogSystem::InitLogSystem();
 
 	// 开始构建
 	// 构建计时器系统
