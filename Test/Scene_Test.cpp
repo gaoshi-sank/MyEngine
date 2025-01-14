@@ -28,6 +28,7 @@ void Scene_Test::Init() {
 	});
 
 	LogI("", "request:[%d]", 1);
+	LogI("", "request:[%d]", 2);
 }
 
 //  Õ∑≈
