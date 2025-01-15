@@ -27,8 +27,8 @@ void Scene_Test::Init() {
 		EventControl(uiType, ui_id, msgType, message);
 	});
 
-	LogI("", "request:[%d]", 1);
-	LogI("", "request:[%d]", 2);
+	LogI("request:[%d]", 1);
+	LogI("request:[%d]", 2);
 }
 
 //  Õ∑≈

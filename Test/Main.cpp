@@ -9,10 +9,13 @@ int APIENTRY wWinMain(
     _In_        LPWSTR    lpCmdLine,
     _In_        int       nCmdShow)
 {
+    LogI("game begin");
     EngineProvider::InitEngine(hInstance);
 
     SceneManager::AddScene(new Scene_Test());
 
     EngineProvider::RunEngine();
+
+    LogI("game end");
     return 0;
 }
