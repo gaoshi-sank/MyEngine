@@ -1,4 +1,5 @@
 #include "Scene_Test.h"
+#include "../Engine/Input/InputFactory.h"
 
 // 构造
 Scene_Test::Scene_Test() {
@@ -40,8 +41,14 @@ void Scene_Test::Release() {
 
 // 更新
 void Scene_Test::Update() {
-
-
+	auto input = InputFactory::GetInstance()->GetInput();
+	if (input) {
+		auto x = -1, y = -1;
+		auto ret = input->GetMousePos(x, y);
+		if (ret && (x != -1 && y != -1)) {
+			LogI("mouse pos = [%d,%d]", x, y);
+		}
+	}
 
 }
 
