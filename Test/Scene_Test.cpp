@@ -30,6 +30,10 @@ void Scene_Test::Init() {
 
 	LogI("request:[%d]", 1);
 	LogI("request:[%d]", 2);
+
+	for (auto i = 0; i < 10000;i++) {
+		LogI("logsystem testing...");
+	}
 }
 
 // ÊÍ·Å
