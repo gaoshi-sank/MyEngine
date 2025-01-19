@@ -34,7 +34,7 @@ public:
 	virtual void Stop() = 0;
 
 	// »Øµ÷º¯Êý
-	virtual void Callback(std::function<void(int*)> _callback) = 0;
+	virtual void Callback(std::function<void(int*)> _callback);
 };
 
 #endif // !_Scene_Base_h_
