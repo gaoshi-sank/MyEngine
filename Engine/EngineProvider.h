@@ -46,17 +46,14 @@ public:
 	static EngineProvider* GetInstance();
 
 	// 初始化引擎
-	static void InitEngine();
-
-	// 初始化引擎
-	static void InitEngine(HINSTANCE _hinst);
+	static void InitEngine(HINSTANCE _hinst = nullptr, bool isFull = true, int width = 0, int height = 0);
 
 	// 运行引擎
 	static void RunEngine();
 
 private:
 	// 构建引擎
-	void BuildEngineStruct();
+	void BuildEngineStruct(int x, int y, int width, int height, bool isFull = false);
 
 	// 主线程运行
 	void MainRunLoop();
