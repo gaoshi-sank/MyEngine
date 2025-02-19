@@ -1,4 +1,3 @@
-#include <Windows.h>
 #include "../Engine/EngineProvider.h"
 #include "Scene_Test.h"
 
@@ -10,7 +9,7 @@ int APIENTRY wWinMain(
     _In_        int       nCmdShow)
 {
     LogI("game begin");
-    EngineProvider::InitEngine(hInstance);
+    EngineProvider::InitEngine(hInstance, RenderFactory::RenderType_Direct2D);
 
     SceneManager::AddScene(new Scene_Test());
 

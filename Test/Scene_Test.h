@@ -12,6 +12,7 @@ private:
 	int isclick = 0;
 
 	std::vector<UI_Base*> listTest;
+	std::shared_ptr<SImage> sfmlTest;
 
 public:
 	// ¹¹Ôì

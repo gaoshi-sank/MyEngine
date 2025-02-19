@@ -24,15 +24,9 @@ void Scene_Test::Init() {
 	std::string testpath = "C:\\Users\\asus\\Pictures\\39\\Common\\9-1.png";
 	std::string planepath = FileControl::ResPath("1.txt");
 	
-	listTest = PlaneFactory::BuildUIByFile(planepath.c_str(), [&](int uiType, int ui_id, int msgType, int message) {
-		EventControl(uiType, ui_id, msgType, message);
-	});
-
-	LogI("request:[%d]", 1);
-	LogI("request:[%d]", 2);
-
-	for (auto i = 0; i < 10000;i++) {
-		LogI("logsystem testing...");
+	sfmlTest = std::make_shared<SImage>(testpath.c_str());
+	if (sfmlTest) {
+		
 	}
 }
 
@@ -54,12 +48,18 @@ void Scene_Test::Update() {
 		}
 	}
 
+	if (sfmlTest) {
+		sfmlTest->Update();
+	}
+
 }
 
 // äÖÈ¾
 void Scene_Test::Draw() {
 
-
+	if (sfmlTest) {
+		sfmlTest->Draw();
+	}
 
 }
 
