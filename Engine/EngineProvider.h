@@ -40,13 +40,14 @@ private:
 
 	// 配置
 	double setting_fps;		// 帧率
+	int setting_render;		// 渲染类型
 
 public:
 	// 获取引擎
 	static EngineProvider* GetInstance();
 
 	// 初始化引擎
-	static void InitEngine(HINSTANCE _hinst = nullptr, bool isFull = true, int width = 0, int height = 0);
+	static void InitEngine(HINSTANCE _hinst = nullptr, int renderType = RenderFactory::RenderType_Direct2D, bool isFull = true, int width = 0, int height = 0);
 
 	// 运行引擎
 	static void RunEngine();

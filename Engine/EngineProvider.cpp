@@ -27,25 +27,22 @@ EngineProvider* EngineProvider::GetInstance() {
 }
 
 // 初始化引擎
-void EngineProvider::InitEngine(HINSTANCE _hinst, bool isFull, int width, int height) {
+void EngineProvider::InitEngine(HINSTANCE _hinst, int renderType, bool isFull, int width, int height) {
 	if (!g_eng) {
 		g_eng = new EngineProvider();
 	}
 	
 	auto x = 0;
 	auto y = 0;
-	auto win32_width = 0;
-	auto win32_height = 0;
-	if (isFull) {
-		win32_width = GetSystemMetrics(SM_CXSCREEN);
-		win32_height = GetSystemMetrics(SM_CYSCREEN);
-	}
-	else {
+	auto win32_width = GetSystemMetrics(SM_CXSCREEN);
+	auto win32_height = GetSystemMetrics(SM_CYSCREEN);
+	if (!isFull) {
 		x = (win32_width - width) / 2;
 		y = (win32_height - height) / 2;
 	}
 
 	g_eng->engine_hInstance = _hinst;
+	g_eng->setting_render = renderType;
 	g_eng->BuildEngineStruct(x, y, win32_width, win32_height, isFull);
 }
 
@@ -83,7 +80,7 @@ void EngineProvider::BuildEngineStruct(int x, int y, int width, int height, bool
 	InputFactory::InitInput(InputFactory::InputType_DirectInput8, engine_hInstance, mainWindow->GetHandle());
 
 	// 构建渲染系统
-	RenderFactory::InitRender(RenderFactory::RenderType_Direct2D, mainWindow->GetHandle(), width, height);
+	RenderFactory::InitRender(setting_render, mainWindow->GetHandle(), width, height);
 
 	// 构建UI系统
 	UIFactory::InitUIProvider();
