@@ -14,6 +14,7 @@ EngineProvider::EngineProvider() {
 
 	// ÅäÖÃ
 	setting_fps = 0;
+	setting_render = 0;
 }
 
 // Îö¹¹
@@ -39,6 +40,8 @@ void EngineProvider::InitEngine(HINSTANCE _hinst, int renderType, bool isFull, i
 	if (!isFull) {
 		x = (win32_width - width) / 2;
 		y = (win32_height - height) / 2;
+		win32_width = width;
+		win32_height = height;
 	}
 
 	g_eng->engine_hInstance = _hinst;
