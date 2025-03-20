@@ -15,6 +15,10 @@ EngineProvider::EngineProvider() {
 	// 配置
 	setting_fps = 0;
 	setting_render = 0;
+	setting_windowX = 0;
+	setting_windowY = 0;
+	setting_windowWidth = 0;
+	setting_windowHeight = 0;
 }
 
 // 析构
@@ -56,6 +60,14 @@ void EngineProvider::RunEngine() {
 	}
 }
 
+// 获取程序窗口大小
+void EngineProvider::GetWindowSize(int& x, int& y, int& width, int& height) {
+	x = setting_windowX;
+	y = setting_windowY;
+	width = setting_windowWidth;
+	height = setting_windowHeight;
+}
+
 // 构建引擎
 void EngineProvider::BuildEngineStruct(int x, int y, int width, int height, bool isFull) {
 	if (buildEngine_state == 1) {
@@ -70,6 +82,10 @@ void EngineProvider::BuildEngineStruct(int x, int y, int width, int height, bool
 	TimerFactory::InitTimerFactory();
 
 	// 构建Win32系统
+	setting_windowX = x;
+	setting_windowY = y;
+	setting_windowWidth = width;
+	setting_windowHeight = height;
 	WindowFactory::SethInstance(engine_hInstance);
 	if (isFull) {
 		this->mainWindow = WindowFactory::Build();

@@ -39,8 +39,12 @@ private:
 	std::condition_variable cv_render;	// 条件 - 渲染
 
 	// 配置
-	double setting_fps;		// 帧率
-	int setting_render;		// 渲染类型
+	double setting_fps;			// 帧率
+	int setting_render;			// 渲染类型
+	int setting_windowX;		// 窗口区域
+	int setting_windowY;		// 
+	int setting_windowWidth;	// 
+	int setting_windowHeight;	// 
 
 public:
 	// 获取引擎
@@ -51,6 +55,9 @@ public:
 
 	// 运行引擎
 	static void RunEngine();
+
+	// 获取程序窗口大小
+	void GetWindowSize(int& x, int& y, int& width, int& height);
 
 private:
 	// 构建引擎
