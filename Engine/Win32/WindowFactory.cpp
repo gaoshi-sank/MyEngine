@@ -11,7 +11,7 @@ Window::Window() {
     x = y = width = height = 0;
     style = WS_POPUP | WS_VISIBLE;
     isfull = true;
-
+    msgCallback = nullptr;
     wsprintf(szTitle, "Engine2D");
     wsprintf(szWindowClass, "Engine2D_%p", this);
 }
@@ -22,7 +22,7 @@ Window::~Window() {
 }
 
 // 创建
-void Window::Create() {
+void Window::Create(std::function<void()> _callback) {
     // 区分窗口类别
     if (m_hinstance && !m_fatherhWnd) {
         WNDCLASS wcex = { 0 };
@@ -56,7 +56,10 @@ void Window::Create() {
         m_hinstance,    // 实例句柄
         (LPVOID)this);  // 额外创建参数
 
-    if (!m_hWnd) {
+    if (m_hWnd) {
+        this->msgCallback = _callback;
+    }
+    else{
         return;
     }
 }
@@ -81,7 +84,9 @@ void Window::Process() {
         }
         // 空闲时间
         else {
-            
+            if (msgCallback) {
+                msgCallback();
+            }
         }
     }
 
@@ -137,7 +142,7 @@ void WindowFactory::SethInstance(HINSTANCE _hinstance) {
 
 // 新建一个窗口
 // 默认全屏
-std::shared_ptr<Window> WindowFactory::Build() {
+std::shared_ptr<Window> WindowFactory::Build(std::function<void()> _callback) {
     std::shared_ptr<Window> result = nullptr;
     if (!isMainBuild) {
         isMainBuild = true;
@@ -156,7 +161,7 @@ std::shared_ptr<Window> WindowFactory::Build() {
             result->m_hinstance = hinstance;
 
             // 创建
-            result->Create();
+            result->Create(_callback);
         }
     }
     return result;
@@ -164,7 +169,7 @@ std::shared_ptr<Window> WindowFactory::Build() {
 
 // 新建一个窗口
 // 参数 - 位置和大小
-std::shared_ptr<Window> WindowFactory::Build(int x, int y, int width, int height) {
+std::shared_ptr<Window> WindowFactory::Build(int x, int y, int width, int height, std::function<void()> _callback) {
     std::shared_ptr<Window> result = nullptr;
     if (!isMainBuild) {
         isMainBuild = true;
@@ -181,7 +186,7 @@ std::shared_ptr<Window> WindowFactory::Build(int x, int y, int width, int height
             result->m_hinstance = hinstance;
 
             // 创建
-            result->Create();
+            result->Create(_callback);
         }
     }
     return result;
