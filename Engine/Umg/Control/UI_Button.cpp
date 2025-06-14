@@ -52,18 +52,11 @@ bool UI_Button::Create(const std::string& filename, int x, int y, int w, int h) 
 
 	if (!filename.empty()) {
 		auto _image = new SImage(filename.c_str());
-		if (!_image) {
-			return false;
-		}
-		else {
-			// 设置裁剪
-			int width = 0;
-			int height = 0;
-			auto ret = _image->GetImageSize(width, height);
-			if (ret && width != 0 && height != 0) {
-				auto srcw = width / 4;
-				_image->SetCrop(0, 0, srcw, height);
-			}
+		if (_image) {
+			// 重设裁剪
+			auto image = _image->GetImage();
+			auto src_rect = D2D1::RectF();	// 裁剪区域
+			_image->SetCrop(src_rect);
 
 			// 添加
 			list_image.push_back(_image);
@@ -73,8 +66,7 @@ bool UI_Button::Create(const std::string& filename, int x, int y, int w, int h) 
 		button_style = ButtonStyle_Once;
 	}
 
-	SetLocation(x, y);
-	SetSize(w, h);
+	SetRect(x, y, w, h);
 	return true;
 }
 
@@ -121,8 +113,7 @@ void UI_Button::AddStaticText(const std::string& text) {
 	}
 
 	if (_text) {
-		_text->SetLocation(window_x, window_y);
-		_text->SetSize(window_width, window_height);
+		_text->SetRect(D2D1::RectF((float)window_x, (float)window_y, (float)window_x + window_width, (float)window_y + window_height));
 		_text->ReSetLayout();
 	}
 }
@@ -223,15 +214,8 @@ void UI_Button::Update() {
 		if (button_style == ButtonStyle_Once) {
 			auto& _image = list_image[0];
 
-			// 设置裁剪
-			int width = 0;
-			int height = 0;
-			auto ret = _image->GetImageSize(width, height);
-			if (ret && width != 0 && height != 0) {
-				auto srcw = width / 4;
-				auto srcx = (button_state - 1) * srcw;
-				_image->SetCrop(srcx, 0, srcw, height);
-			}
+			// 重设裁剪区域
+			auto image = _image->GetImage();
 
 			// 更新
 			_image->Update();
@@ -277,51 +261,29 @@ void UI_Button::Draw() {
 
 }
 
-// 设置位置
-void UI_Button::SetLocation(int x, int y) {
+// 设置区域
+void UI_Button::SetRect(int x, int y, int width, int height) {
 	if (window_release) {
 		return;
 	}
 
 	this->window_x = x;
 	this->window_y = y;
+	this->window_width = width;
+	this->window_height = height;
 
 	// 图像
 	if (!list_image.empty()) {
 		for (auto& _image : list_image) {
 			if (_image) {
-				_image->SetLocation(x, y);
+				_image->SetRect(D2D1::RectF((float)window_x, (float)window_y, (float)window_x + window_width, (float)window_y + window_height));
 			}
 		}
 	}
 
 	// 文本
 	if (_text) {
-		_text->SetLocation(x, y);
-	}
-}
-
-// 设置大小
-void UI_Button::SetSize(int w, int h) {
-	if (window_release) {
-		return;
-	}
-
-	this->window_width = w;
-	this->window_height = h;
-
-	// 图像
-	if (!list_image.empty()) {
-		for (auto& _image : list_image) {
-			if (_image) {
-				_image->SetSize(w, h);
-			}
-		}
-	}
-
-	// 文本
-	if (_text) {
-		_text->SetSize(w, h);
+		_text->SetRect(D2D1::RectF((float)window_x, (float)window_y, (float)window_x + window_width, (float)window_y + window_height));
 	}
 }
 

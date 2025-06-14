@@ -56,11 +56,8 @@ public:
 	// 绘制
 	virtual void Draw();
 
-	// 设置位置
-	virtual void SetLocation(int x, int y);
-
-	// 设置大小
-	virtual void SetSize(int w, int h);
+	// 设置区域
+	virtual void SetRect(int x, int y, int width, int height);
 
 	// 设置可见性
 	virtual void SetVisiable(bool visible = false);

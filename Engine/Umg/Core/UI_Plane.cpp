@@ -93,26 +93,16 @@ void UI_Plane::Draw() {
 	}
 }
 
-// 设置位置
-void UI_Plane::SetLocation(int x, int y) {
+// 设置区域
+void UI_Plane::SetRect(int x, int y, int width, int height) {
 	if (window_release) {
 		return;
 	}
 
 	this->window_x = x;
 	this->window_y = y;
-
-}
-
-// 设置大小
-void UI_Plane::SetSize(int w, int h) {
-	if (window_release) {
-		return;
-	}
-
-	this->window_width = w;
-	this->window_height = h;
-
+	this->window_width = width;
+	this->window_height = height;
 }
 
 // 设置可见性

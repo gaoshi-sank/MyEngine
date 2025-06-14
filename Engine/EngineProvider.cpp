@@ -12,7 +12,6 @@ EngineProvider::EngineProvider() {
 
 	// 配置
 	setting_fps = 0;
-	setting_render = 0;
 	setting_windowX = 0;
 	setting_windowY = 0;
 	setting_windowWidth = 0;
@@ -30,7 +29,7 @@ EngineProvider* EngineProvider::GetInstance() {
 }
 
 // 初始化引擎
-void EngineProvider::InitEngine(HINSTANCE _hinst, int renderType, bool isFull, int width, int height) {
+void EngineProvider::InitEngine(HINSTANCE _hinst, bool isFull, int width, int height) {
 	if (!g_eng) {
 		g_eng = new EngineProvider();
 	}
@@ -47,7 +46,6 @@ void EngineProvider::InitEngine(HINSTANCE _hinst, int renderType, bool isFull, i
 	}
 
 	g_eng->engine_hInstance = _hinst;
-	g_eng->setting_render = renderType;
 	g_eng->BuildEngineStruct(x, y, win32_width, win32_height, isFull);
 }
 
@@ -101,7 +99,7 @@ void EngineProvider::BuildEngineStruct(int x, int y, int width, int height, bool
 	InputFactory::InitInput(InputFactory::InputType_DirectInput8, engine_hInstance, mainWindow->GetHandle());
 
 	// 构建渲染系统
-	RenderFactory::InitRender(setting_render, mainWindow->GetHandle(), width, height);
+	RenderFactory::InitRender(mainWindow->GetHandle(), width, height);
 
 	// 构建UI系统
 	UIFactory::InitUIProvider();
