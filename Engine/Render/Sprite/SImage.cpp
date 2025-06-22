@@ -25,6 +25,9 @@ SImage::SImage(const char* filename) : SImage(){
 			auto size_f = _image->GetSize();
 			src_rect.right = src_rect.left + size_f.width;
 			src_rect.bottom = src_rect.top + size_f.height;
+			if (draw_rect.right == 0 || draw_rect.bottom == 0) {
+				draw_rect = src_rect;
+			}
 		}
 	}
 }
@@ -92,3 +95,22 @@ D2D1_RECT_F SImage::GetCrop() {
 	return this->src_rect;
 }
 
+// ±£´æÊı¾İ
+void SImage::SaveToFile(const char* filename) {
+	if (filename) {
+		auto render = RenderFactory::GetInstance()->GetRender();
+		if (render) {
+			const size_t length = strlen(filename);
+			if (length > 0) {
+				wchar_t* savepath = new wchar_t[length];
+				if (savepath) {
+					memset(savepath, 0, sizeof(wchar_t) * length);
+					auto ret = CharToWChar(filename, savepath);
+					if (ret) {
+						render->SaveBitmapToFile(this->_image, savepath);
+					}
+				}
+			}
+		}
+	}
+}

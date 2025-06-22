@@ -72,7 +72,7 @@ void UI_Lable::AddStaticText(const std::string& text) {
 }
 
 // 事件驱动
-void UI_Lable::CheckEvent(unsigned int* param) {
+void UI_Lable::CheckEvent(uint32_t eventType, std::vector<uint32_t> eventParams) {
 	// 标签UI不参与
 }
 

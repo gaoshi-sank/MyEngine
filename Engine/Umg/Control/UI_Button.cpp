@@ -120,10 +120,10 @@ void UI_Button::AddStaticText(const std::string& text) {
 
 
 // 更新事件
-void UI_Button::CheckEvent(unsigned int* param) {
-	UI_Base::CheckEvent(param);
+void UI_Button::CheckEvent(uint32_t eventType, std::vector<uint32_t> eventParams) {
+	UI_Base::CheckEvent(eventType, eventParams);
 
-	if (window_release || !param) {
+	if (window_release || eventParams.empty()) {
 		return;
 	}
 
@@ -131,63 +131,60 @@ void UI_Button::CheckEvent(unsigned int* param) {
 		return;
 	}
 
-	int param_len = param[0];
-	if (param_len >= 2) {
-		auto message = param[1];
-		if (window_mouse) {
-			if (message == WM_LBUTTONDOWN) {
-				// 区域内按下
-				if (window_inrect) {
-					// 未按下
-					if (click_state == 0) {
-						click_state = 1;
+	if (window_mouse) {
+		if (eventType == WM_LBUTTONDOWN) {
+			// 区域内按下
+			if (window_inrect) {
+				// 未按下
+				if (click_state == 0) {
+					click_state = 1;
 
-						// 按下事件
-						if (callback_down) {
-							callback_down(window_id);
-						}
+					// 按下事件
+					if (callback_down) {
+						callback_down(window_id);
 					}
-				}
-				// 区域外按下
-				else {
-					// 未按下状态
-					click_state = 0;
 				}
 			}
-			else if (message == WM_LBUTTONUP) {
-				// 区域内放开
-				if (window_inrect) {
-					// 之前按下过
-					if (click_state == 1) {
-						// 出发点击事件
-						if (callback_click) {
-							callback_click(window_id);
-						}
-					}
-
-					// 出发放开事件
-					if (callback_up) {
-						callback_up(window_id);
-					}
-				}
-
-				// 修改状态
+			// 区域外按下
+			else {
+				// 未按下状态
 				click_state = 0;
 			}
-			else if (message == WM_MOUSEMOVE) {
-				// 在区域内移动
-				if (window_inrect) {
-					// 触发悬停事件
-					if (callback_hover) {
-						callback_hover(window_id);
+		}
+		else if (eventType == WM_LBUTTONUP) {
+			// 区域内放开
+			if (window_inrect) {
+				// 之前按下过
+				if (click_state == 1) {
+					// 出发点击事件
+					if (callback_click) {
+						callback_click(window_id);
 					}
+				}
+
+				// 出发放开事件
+				if (callback_up) {
+					callback_up(window_id);
+				}
+			}
+
+			// 修改状态
+			click_state = 0;
+		}
+		else if (eventType == WM_MOUSEMOVE) {
+			// 在区域内移动
+			if (window_inrect) {
+				// 触发悬停事件
+				if (callback_hover) {
+					callback_hover(window_id);
 				}
 			}
 		}
-		else if (window_key) {
-
-		}
 	}
+	else if (window_key) {
+
+	}
+
 }
 
 // 更新

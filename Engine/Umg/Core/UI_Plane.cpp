@@ -52,12 +52,12 @@ void UI_Plane::AddAttachedUI(UI_Base* attached_ui) {
 }
 
 // 事件驱动
-void UI_Plane::CheckEvent(unsigned int* param) {
-	if (param) {
+void UI_Plane::CheckEvent(uint32_t eventType, std::vector<uint32_t> eventParams) {
+	if (!eventParams.empty()) {
 		for (auto& _ui : ListAttached) {
 			// 基础判断条件
 			if (_ui && _ui->window_id != 0x00 && !_ui->window_release) {
-				_ui->CheckEvent(param);
+				_ui->CheckEvent(eventType, eventParams);
 			}
 		}
 	}

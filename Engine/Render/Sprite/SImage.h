@@ -49,6 +49,9 @@ public:
 	// 获取裁剪区域
 	virtual D2D1_RECT_F GetCrop();
 
+	// 保存数据
+	virtual void SaveToFile(const char* filename );
+
 };
 
 #endif // !_SImage_h_

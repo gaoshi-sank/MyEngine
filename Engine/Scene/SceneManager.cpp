@@ -54,6 +54,11 @@ void SceneManager::DrawScene() {
 	}
 }
 
+// 事件驱动
+void SceneManager::SceneEvent(uint32_t eventType, std::vector<uint32_t> eventParams) {
+
+}
+
 // 加入场景
 void SceneManager::AddScene(Scene_Base* _scene) {
 	if (_scene && g_sceneManger) {
@@ -135,4 +140,12 @@ void SceneManager::Draw(){
 // 释放
 void SceneManager::Release() {
 
+}
+
+// 事件驱动
+void SceneManager::CheckEvent(uint32_t eventType, std::vector<uint32_t> eventParams) {
+	if (Scene_Index != 0 && MapScene.count(Scene_Index) == 1) {
+		auto& scene = MapScene[Scene_Index];
+		scene->CheckEvent(eventType, eventParams);
+	}
 }

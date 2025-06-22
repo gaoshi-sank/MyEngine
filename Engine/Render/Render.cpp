@@ -81,7 +81,36 @@ void Render::EndPlay() {
 // 绘制图像
 void Render::RenderImage(ID2D1Bitmap* image, D2D1_RECT_F rect, D2D1_RECT_F src_rect, float opacity, float angle) {
 	if (render_target && image) {
-		render_target->DrawBitmap(image, rect, opacity, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, src_rect);
+		//  创建一个状态块（用来保存绘图状态）
+		ID2D1DrawingStateBlock* pStateBlock = nullptr;
+		factory->CreateDrawingStateBlock(&pStateBlock);
+
+		if (pStateBlock) {
+			// 保存当前绘图状态
+			render_target->SaveDrawingState(pStateBlock);
+
+			// 计算图片中心点
+			D2D1_POINT_2F center = D2D1::Point2F(
+				(rect.left + rect.right) / 2,
+				(rect.top + rect.bottom) / 2
+			);
+
+			// 设置旋转（angle是旋转角度）
+			render_target->SetTransform(
+				D2D1::Matrix3x2F::Rotation(angle, center)
+			);
+
+			// 绘制图片
+			render_target->DrawBitmap(image, rect, opacity, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, src_rect);
+
+			// 恢复绘图状态
+			render_target->RestoreDrawingState(pStateBlock);
+
+			// 释放
+			pStateBlock->Release();
+		}
+
+		pStateBlock = nullptr;
 	}
 }
 
@@ -90,6 +119,256 @@ void Render::RenderText(wchar_t* render_text, D2D1_RECT_F text_rect, IDWriteText
 	if (render_target && render_text && layout && brash) {
 		render_target->DrawText(render_text, UINT32(wcslen(render_text)), layout, text_rect, brash, D2D1_DRAW_TEXT_OPTIONS_CLIP);
 	}
+}
+
+// 绘制直线
+void Render::RenderLine(D2D1_POINT_2F start, D2D1_POINT_2F end,
+	D2D1_COLOR_F color, float strokeWidth,
+	float angle, D2D1_POINT_2F rotationCenter) {
+	if (!render_target) return;
+
+	ID2D1SolidColorBrush* pBrush = nullptr;
+	render_target->CreateSolidColorBrush(color, &pBrush);
+	if (!pBrush) return;
+
+	// 保存当前绘图状态
+	ID2D1DrawingStateBlock* pStateBlock = nullptr;
+	factory->CreateDrawingStateBlock(&pStateBlock);
+	if (pStateBlock) {
+		render_target->SaveDrawingState(pStateBlock);
+
+		// 设置旋转
+		if (angle != 0.0f) {
+			render_target->SetTransform(
+				D2D1::Matrix3x2F::Rotation(angle, rotationCenter)
+			);
+		}
+
+		// 绘制直线
+		render_target->DrawLine(start, end, pBrush, strokeWidth);
+
+		// 恢复绘图状态
+		render_target->RestoreDrawingState(pStateBlock);
+		pStateBlock->Release();
+	}
+
+	pBrush->Release();
+}
+
+// 绘制矩形
+void Render::RenderRectangle(D2D1_RECT_F rect, D2D1_COLOR_F fillColor,
+	D2D1_COLOR_F strokeColor, float strokeWidth,
+	float angle, D2D1_POINT_2F rotationCenter) {
+	if (!render_target) return;
+
+	ID2D1SolidColorBrush* pFillBrush = nullptr;
+	ID2D1SolidColorBrush* pStrokeBrush = nullptr;
+	render_target->CreateSolidColorBrush(fillColor, &pFillBrush);
+	render_target->CreateSolidColorBrush(strokeColor, &pStrokeBrush);
+	if (!pFillBrush || !pStrokeBrush) {
+		if (pFillBrush) pFillBrush->Release();
+		if (pStrokeBrush) pStrokeBrush->Release();
+		return;
+	}
+
+	// 保存当前绘图状态
+	ID2D1DrawingStateBlock* pStateBlock = nullptr;
+	factory->CreateDrawingStateBlock(&pStateBlock);
+	if (pStateBlock) {
+		render_target->SaveDrawingState(pStateBlock);
+
+		// 设置旋转
+		if (angle != 0.0f) {
+			render_target->SetTransform(
+				D2D1::Matrix3x2F::Rotation(angle, rotationCenter)
+			);
+		}
+
+		// 填充矩形
+		render_target->FillRectangle(rect, pFillBrush);
+		// 绘制矩形边框
+		render_target->DrawRectangle(rect, pStrokeBrush, strokeWidth);
+
+		// 恢复绘图状态
+		render_target->RestoreDrawingState(pStateBlock);
+		pStateBlock->Release();
+	}
+
+	pFillBrush->Release();
+	pStrokeBrush->Release();
+}
+
+// 绘制椭圆
+void Render::RenderEllipse(D2D1_RECT_F rect, D2D1_COLOR_F fillColor,
+	D2D1_COLOR_F strokeColor, float strokeWidth,
+	float angle, D2D1_POINT_2F rotationCenter) {
+	if (!render_target) return;
+
+	ID2D1SolidColorBrush* pFillBrush = nullptr;
+	ID2D1SolidColorBrush* pStrokeBrush = nullptr;
+	render_target->CreateSolidColorBrush(fillColor, &pFillBrush);
+	render_target->CreateSolidColorBrush(strokeColor, &pStrokeBrush);
+	if (!pFillBrush || !pStrokeBrush) {
+		if (pFillBrush) pFillBrush->Release();
+		if (pStrokeBrush) pStrokeBrush->Release();
+		return;
+	}
+
+	// 创建椭圆几何体
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+		D2D1::Point2F((rect.left + rect.right) / 2, (rect.top + rect.bottom) / 2),
+		(rect.right - rect.left) / 2,
+		(rect.bottom - rect.top) / 2
+	);
+
+	// 保存当前绘图状态
+	ID2D1DrawingStateBlock* pStateBlock = nullptr;
+	factory->CreateDrawingStateBlock(&pStateBlock);
+	if (pStateBlock) {
+		render_target->SaveDrawingState(pStateBlock);
+
+		// 设置旋转
+		if (angle != 0.0f) {
+			render_target->SetTransform(
+				D2D1::Matrix3x2F::Rotation(angle, rotationCenter)
+			);
+		}
+
+		// 填充椭圆
+		render_target->FillEllipse(ellipse, pFillBrush);
+		// 绘制椭圆边框
+		render_target->DrawEllipse(ellipse, pStrokeBrush, strokeWidth);
+
+		// 恢复绘图状态
+		render_target->RestoreDrawingState(pStateBlock);
+		pStateBlock->Release();
+	}
+
+	pFillBrush->Release();
+	pStrokeBrush->Release();
+}
+
+// 绘制多边形
+void Render::RenderPolygon(const std::vector<D2D1_POINT_2F>& points,
+	D2D1_COLOR_F fillColor, D2D1_COLOR_F strokeColor,
+	float strokeWidth, float angle,
+	D2D1_POINT_2F rotationCenter) {
+	if (!render_target || points.size() < 3) return;
+
+	ID2D1SolidColorBrush* pFillBrush = nullptr;
+	ID2D1SolidColorBrush* pStrokeBrush = nullptr;
+	render_target->CreateSolidColorBrush(fillColor, &pFillBrush);
+	render_target->CreateSolidColorBrush(strokeColor, &pStrokeBrush);
+	if (!pFillBrush || !pStrokeBrush) {
+		if (pFillBrush) pFillBrush->Release();
+		if (pStrokeBrush) pStrokeBrush->Release();
+		return;
+	}
+
+	// 创建路径几何体
+	ID2D1PathGeometry* pPathGeometry = nullptr;
+	factory->CreatePathGeometry(&pPathGeometry);
+	if (!pPathGeometry) {
+		pFillBrush->Release();
+		pStrokeBrush->Release();
+		return;
+	}
+
+	// 绘制多边形路径
+	ID2D1GeometrySink* pSink = nullptr;
+	pPathGeometry->Open(&pSink);
+	if (pSink) {
+		pSink->BeginFigure(points[0], D2D1_FIGURE_BEGIN_FILLED);
+		for (size_t i = 1; i < points.size(); ++i) {
+			pSink->AddLine(points[i]);
+		}
+		pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
+		pSink->Close();
+		pSink->Release();
+	}
+
+	// 保存当前绘图状态
+	ID2D1DrawingStateBlock* pStateBlock = nullptr;
+	factory->CreateDrawingStateBlock(&pStateBlock);
+	if (pStateBlock) {
+		render_target->SaveDrawingState(pStateBlock);
+
+		// 设置旋转
+		if (angle != 0.0f) {
+			render_target->SetTransform(
+				D2D1::Matrix3x2F::Rotation(angle, rotationCenter)
+			);
+		}
+
+		// 填充多边形
+		render_target->FillGeometry(pPathGeometry, pFillBrush);
+		// 绘制多边形边框
+		render_target->DrawGeometry(pPathGeometry, pStrokeBrush, strokeWidth);
+
+		// 恢复绘图状态
+		render_target->RestoreDrawingState(pStateBlock);
+		pStateBlock->Release();
+	}
+
+	pPathGeometry->Release();
+	pFillBrush->Release();
+	pStrokeBrush->Release();
+}
+
+// 绘制多段线
+void Render::RenderPolyline(const std::vector<D2D1_POINT_2F>& points,
+	D2D1_COLOR_F strokeColor, float strokeWidth,
+	float angle, D2D1_POINT_2F rotationCenter) {
+	if (!render_target || points.size() < 2) return;
+
+	ID2D1SolidColorBrush* pStrokeBrush = nullptr;
+	render_target->CreateSolidColorBrush(strokeColor, &pStrokeBrush);
+	if (!pStrokeBrush) return;
+
+	// 创建路径几何体
+	ID2D1PathGeometry* pPathGeometry = nullptr;
+	factory->CreatePathGeometry(&pPathGeometry);
+	if (!pPathGeometry) {
+		pStrokeBrush->Release();
+		return;
+	}
+
+	// 绘制多段线路径
+	ID2D1GeometrySink* pSink = nullptr;
+	pPathGeometry->Open(&pSink);
+	if (pSink) {
+		pSink->BeginFigure(points[0], D2D1_FIGURE_BEGIN_HOLLOW);
+		for (size_t i = 1; i < points.size(); ++i) {
+			pSink->AddLine(points[i]);
+		}
+		pSink->EndFigure(D2D1_FIGURE_END_OPEN);
+		pSink->Close();
+		pSink->Release();
+	}
+
+	// 保存当前绘图状态
+	ID2D1DrawingStateBlock* pStateBlock = nullptr;
+	factory->CreateDrawingStateBlock(&pStateBlock);
+	if (pStateBlock) {
+		render_target->SaveDrawingState(pStateBlock);
+
+		// 设置旋转
+		if (angle != 0.0f) {
+			render_target->SetTransform(
+				D2D1::Matrix3x2F::Rotation(angle, rotationCenter)
+			);
+		}
+
+		// 绘制多段线
+		render_target->DrawGeometry(pPathGeometry, pStrokeBrush, strokeWidth);
+
+		// 恢复绘图状态
+		render_target->RestoreDrawingState(pStateBlock);
+		pStateBlock->Release();
+	}
+
+	pPathGeometry->Release();
+	pStrokeBrush->Release();
 }
 
 // 创建图像
@@ -250,6 +529,10 @@ void Render::SetTextStyle(IDWriteTextLayout* _layout, int horizontal, int vertic
 	}
 }
 
+// 保存位图到文件
+bool Render::SaveBitmapToFile(ID2D1Bitmap* pBitmap, const wchar_t* filePath) {
+	return false;
+}
 // 获取图像格式解析对象
 HRESULT Render::GetFormatConvert(IWICFormatConverter*& pConverter, LPCWSTR filename) {
 	// 变量列表

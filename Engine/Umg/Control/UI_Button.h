@@ -48,7 +48,7 @@ public:
 	virtual void AddStaticText(const std::string& text);
 
 	// 事件驱动
-	virtual void CheckEvent(unsigned int* param);
+	virtual void CheckEvent(uint32_t eventType, std::vector<uint32_t> eventParams);
 
 	// 更新
 	virtual void Update();

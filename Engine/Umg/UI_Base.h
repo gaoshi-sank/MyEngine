@@ -65,7 +65,7 @@ public:
 	virtual bool Create() = 0;
 
 	// 事件驱动
-	virtual void CheckEvent(unsigned int* param) = 0;
+	virtual void CheckEvent(uint32_t eventType, std::vector<uint32_t> eventParams) = 0;
 
 	// 更新
 	virtual void Update() = 0;

@@ -122,10 +122,10 @@ void UI_CheckBox::AddStaticText(const std::string& text) {
 
 
 // 更新事件
-void UI_CheckBox::CheckEvent(unsigned int* param) {
-	UI_Base::CheckEvent(param);
+void UI_CheckBox::CheckEvent(uint32_t eventType, std::vector<uint32_t> eventParams) {
+	UI_Base::CheckEvent(eventType, eventParams);
 
-	if (window_release || !param) {
+	if (window_release || eventParams.empty()) {
 		return;
 	}
 
@@ -133,37 +133,33 @@ void UI_CheckBox::CheckEvent(unsigned int* param) {
 		return;
 	}
 
-	int param_len = param[0];
-	if (param_len >= 2) {
-		auto message = param[1];
-		if (window_mouse) {
-			if (message == WM_LBUTTONDOWN) {
-				// 区域内按下
-				if (window_inrect) {
-					check_state = (check_state == 1) ? 0 : 1;
+	if (window_mouse) {
+		if (eventType == WM_LBUTTONDOWN) {
+			// 区域内按下
+			if (window_inrect) {
+				check_state = (check_state == 1) ? 0 : 1;
 
-					// 触发复选框事件
-					UIFactory::CheckBoxParam(this->window_id, this->group, check_state);
+				// 触发复选框事件
+				UIFactory::CheckBoxParam(this->window_id, this->group, check_state);
 
-					// 按下事件
-					if (callback_down) {
-						callback_down(window_id);
-					}
-				}
-			}
-			else if (message == WM_MOUSEMOVE) {
-				// 在区域内移动
-				if (window_inrect) {
-					// 触发悬停事件
-					if (callback_hover) {
-						callback_hover(window_id);
-					}
+				// 按下事件
+				if (callback_down) {
+					callback_down(window_id);
 				}
 			}
 		}
-		else if (window_key) {
-
+		else if (eventType == WM_MOUSEMOVE) {
+			// 在区域内移动
+			if (window_inrect) {
+				// 触发悬停事件
+				if (callback_hover) {
+					callback_hover(window_id);
+				}
+			}
 		}
+	}
+	else if (window_key) {
+
 	}
 }
 
