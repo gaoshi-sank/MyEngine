@@ -91,7 +91,7 @@ void SText::Draw(const std::string& draw_text, D2D1_RECT_F other_rect) {
 
 // 设置绘制区域
 void SText::SetRect(D2D1_RECT_F _rect) {
-	// 不实例化	
+	this->draw_rect = _rect;
 }
 
 // 设置旋转
