@@ -56,7 +56,9 @@ void SceneManager::DrawScene() {
 
 // 事件驱动
 void SceneManager::SceneEvent(uint32_t eventType, std::vector<uint32_t> eventParams) {
-
+	if (g_sceneManger) {
+		g_sceneManger->CheckEvent(eventType, eventParams);
+	}
 }
 
 // 加入场景

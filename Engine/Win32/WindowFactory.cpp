@@ -1,6 +1,7 @@
 #include "WindowFactory.h"
 #include "../Render/RenderFactory.h"
 #include "../Umg/UIFactory.h"
+#include "../Scene/SceneManager.h"
 
 // ππ‘Ï
 Window::Window() {
@@ -108,6 +109,7 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
         uint32_t x = GET_X_LPARAM(lParam);
         uint32_t y = GET_Y_LPARAM(lParam);
         UIFactory::CheckEvent(message, { x, y });
+        SceneManager::SceneEvent(message, { x, y });
         break;
     }
     case WM_LBUTTONDOWN:
@@ -118,11 +120,13 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM 
     case WM_MBUTTONUP:
     {
         UIFactory::CheckEvent(message, { 0 });
+        SceneManager::SceneEvent(message, { 0 });
         break;
     }    
     case WM_KEYDOWN:
     {
         UIFactory::CheckEvent(message, { (uint32_t)wParam });
+        SceneManager::SceneEvent(message, { (uint32_t)wParam });
         break;
     } 
     default:
