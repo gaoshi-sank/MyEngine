@@ -24,11 +24,7 @@ SText::SText() {
 
 // 构造
 SText::SText(const char* _text) : SText() {
-	// 重新设置文本
 	ReSetText(_text);
-
-	// 重设文本布局
-	ReSetLayout();
 }
 
 // 析构
@@ -131,11 +127,13 @@ void SText::ReSetText(const char* _text) {
 			delete[] this->render_text;
 			this->render_text = nullptr;
 		}
-
 		size_t loopnum = text.size() / limit_length;
 		this->render_text = new wchar_t[limit_length * (loopnum + 1)];
 		memset(this->render_text, '\0', sizeof(wchar_t) * (limit_length * (loopnum + 1)));
 		CharToWChar(this->text.c_str(), this->render_text);
+		
+		// 重设文本布局
+		ReSetLayout();
 	}
 }
 
