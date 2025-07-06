@@ -13,7 +13,7 @@ Window::Window() {
     style = WS_POPUP | WS_VISIBLE;
     isfull = true;
     msgCallback = nullptr;
-    wsprintf(szTitle, "Engine2D");
+    wsprintf(szTitle, "Ã∞≥‘…ﬂ");
     wsprintf(szWindowClass, "Engine2D_%p", this);
 }
 
